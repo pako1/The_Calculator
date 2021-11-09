@@ -14,13 +14,22 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!--Change the component's shape by overriding the style of the component-->
+    <style name="ShapeAppearanceOverlay.MaterialCardView.Cut" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cardBackgroundColor">@color/black</item>
+        <item name="cornerSizeTopLeft">24dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
 
     <!--All buttons style-->
     <style name="calculator_button_style" parent="">
         <item name="android:textSize">20sp</item>
         <item name="backgroundTint">@color/tr</item>
         <item name="android:textColor">@color/white</item>
-        <item name="cornerRadius">12dp</item>
+        <item name="cornerRadius">14dp</item>
     </style>
 
 </resources>

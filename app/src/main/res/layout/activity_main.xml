@@ -40,7 +40,6 @@
         android:id="@+id/buttonPanel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -184,7 +183,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/zero_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="74dp"
+                android:layout_width="64dp"
                 android:layout_height="74dp"
                 android:text="0" />
 
