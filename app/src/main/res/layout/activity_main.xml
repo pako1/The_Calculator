@@ -19,7 +19,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="30sp"
+            android:textSize="@dimen/text_size_30sp"
             tools:text="24" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -27,14 +27,14 @@
         android:id="@+id/result"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="@dimen/margin_12dp"
         android:gravity="center"
-        android:textSize="26sp"
+        android:textSize="@dimen/text_size_26sp"
         app:layout_constraintBottom_toTopOf="@id/buttonPanel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="0"
-        tools:textColor="@color/black" />
+        tools:textColor="@color/white" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/buttonPanel"
@@ -48,13 +48,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp">
+            android:layout_marginTop="@dimen/margin_24dp"
+            android:layout_marginBottom="@dimen/margin_16dp">
 
             <androidx.constraintlayout.helper.widget.Flow
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="ac_btn,parenthesis_btn,percent_btn,divide_btn,seven_btn,eight_btn,nine_btn,multiply_btn,four_btn,five_btn,six_btn,minus_btn,one_btn,two_btn,three_btn,plus_btn,positive_negative_converter_btn,zero_btn,demical_btn,equals_btn"
+                app:constraint_referenced_ids="ac_btn,parenthesis_btn,percent_btn,divide_btn,seven_btn,eight_btn,nine_btn,multiply_btn,four_btn,five_btn,six_btn,minus_btn,one_btn,two_btn,three_btn,plus_btn,positive_negative_converter_btn,zero_btn,decimal_btn,equals_btn"
                 app:flow_maxElementsWrap="4"
                 app:flow_wrapMode="aligned"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -64,142 +64,142 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/ac_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="C" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/clear_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/percent_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="%" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/percent_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/parenthesis_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="( )" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/parenthesis_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/divide_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="/" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/divide_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/seven_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="7" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/seven_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/eight_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="8" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/eight_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/nine_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="9" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/nine_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/multiply_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="x" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/multiply_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/four_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="4" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/four_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/five_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="5" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/five_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/six_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="6" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/six_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/minus_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="-" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/minus_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/one_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="1" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/one_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/two_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="2" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/two_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/three_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="3" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/three_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/plus_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="+" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/plus_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/positive_negative_converter_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="⁺/-" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/positive_negative_sign_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/zero_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="74dp"
-                android:text="0" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/zero_button_text" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/demical_btn"
+                android:id="@+id/decimal_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="." />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/decimal_button_text" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/equals_btn"
                 style="@style/calculator_button_style"
-                android:layout_width="64dp"
-                android:layout_height="70dp"
-                android:text="=" />
+                android:layout_width="@dimen/calculator_button_width"
+                android:layout_height="@dimen/calculator_button_height"
+                android:text="@string/equal_button_text" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
