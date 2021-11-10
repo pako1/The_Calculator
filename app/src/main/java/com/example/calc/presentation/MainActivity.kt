@@ -3,6 +3,7 @@ package com.example.calc.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.calc.databinding.ActivityMainBinding
+import com.example.calc.domain.toPercent
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,9 +22,36 @@ class MainActivity : AppCompatActivity() {
                 val text = numberInputField.text
                 if (!text.isNullOrEmpty()) {
                     val updatedText = text.toString().trim()
-                    val tedText = updatedText.substring(0, updatedText.length - 1)
-                    numberInputField.setText(tedText)
-                    numberInputField.setSelection(tedText.length)
+                    when (val cursorPosition = numberInputField.selectionStart) {
+                        0 -> return@setOnClickListener
+                        1 -> {
+                            val remainingText = updatedText.substring(1, updatedText.length)
+                            numberInputField.setText(remainingText)
+                            numberInputField.setSelection(0)
+                            result.text = if (remainingText == "%") "" else remainingText
+                        }
+                        updatedText.length -> {
+                            if (updatedText.last() == '%') {
+                                result.text = ""
+                            }
+                            val remainingText = updatedText.substring(0, updatedText.length - 1)
+                            numberInputField.setText(remainingText)
+                            numberInputField.setSelection(remainingText.length)
+                        }
+                        else -> {
+                            val remainingTextFirstPart =
+                                updatedText.substring(0, cursorPosition - 1)
+                            val remainingTextSecondPart =
+                                updatedText.substring(cursorPosition, updatedText.length)
+                            val finalText = remainingTextFirstPart + remainingTextSecondPart
+                            if (finalText.contains("%") && finalText.length > 1) {
+                                result.text =
+                                    finalText.substring(0, finalText.length - 1).toPercent()
+                            }
+                            numberInputField.setText(finalText)
+                            numberInputField.setSelection(remainingTextFirstPart.length)
+                        }
+                    }
                 }
             }
 
@@ -56,9 +84,35 @@ class MainActivity : AppCompatActivity() {
             }
             acBtn.setOnClickListener {
                 numberInputField.text?.clear()
+                result.text = ""
+            }
+            multiplyBtn.setOnClickListener {
+                numberInputField.append("*")
+            }
+            plusBtn.setOnClickListener {
+                numberInputField.append("+")
+            }
+            equalsBtn.setOnClickListener {
+                val mathematicalOperation = numberInputField.text.toString()
+                when {
+                    mathematicalOperation.contains("+") -> {
+                        val firstNumber = mathematicalOperation.substringBefore("+").toInt()
+                        val secondNumber = mathematicalOperation.substringAfter("+").toInt()
+                        result.text = (firstNumber + secondNumber).toString()
+                    }
+                }
+
+
+            }
+
+            percentBtn.setOnClickListener {
+                val inputFieldText = numberInputField.text?.toString()
+                if (!inputFieldText.isNullOrEmpty() && !inputFieldText.contains("%")) {
+                    val numberInPercentage = inputFieldText.toPercent()
+                    numberInputField.append("%")
+                    result.text = numberInPercentage
+                }
             }
         }
-
     }
-
 }
