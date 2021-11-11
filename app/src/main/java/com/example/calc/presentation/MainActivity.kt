@@ -3,18 +3,21 @@ package com.example.calc.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.calc.databinding.ActivityMainBinding
-import com.example.calc.domain.doesPreviousResultExist
+import com.example.calc.domain.Calculator
+import com.example.calc.domain.CalculatorHelper
 import com.example.calc.domain.toPercent
 import kotlin.math.sqrt
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
+    private lateinit var calculatorHelper: CalculatorHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
+        calculatorHelper = Calculator()
         initializeButtons()
     }
 
@@ -59,79 +62,99 @@ class MainActivity : AppCompatActivity() {
             }
 
             oneBtn.setOnClickListener {
+                calculatorHelper.appendTextInput("1")
                 numberInputField.append("1")
             }
 
             twoBtn.setOnClickListener {
+                calculatorHelper.appendTextInput("2")
                 numberInputField.append("2")
             }
 
             threeBtn.setOnClickListener {
+                calculatorHelper.appendTextInput("3")
                 numberInputField.append("3")
             }
 
             fourBtn.setOnClickListener {
+                calculatorHelper.appendTextInput("4")
                 numberInputField.append("4")
             }
 
             fiveBtn.setOnClickListener {
+                calculatorHelper.appendTextInput("5")
                 numberInputField.append("5")
             }
 
             sixBtn.setOnClickListener {
+                calculatorHelper.appendTextInput("6")
                 numberInputField.append("6")
             }
 
             sevenBtn.setOnClickListener {
+                calculatorHelper.appendTextInput("7")
                 numberInputField.append("7")
             }
 
             eightBtn.setOnClickListener {
+                calculatorHelper.appendTextInput("8")
                 numberInputField.append("8")
             }
 
             nineBtn.setOnClickListener {
+                calculatorHelper.appendTextInput("9")
                 numberInputField.append("9")
             }
 
             zeroBtn.setOnClickListener {
+                calculatorHelper.appendTextInput("0")
                 numberInputField.append("0")
             }
 
             acBtn.setOnClickListener {
+                calculatorHelper.resetResult()
+                calculatorHelper.resetTextInput()
                 numberInputField.text?.clear()
                 result.text = ""
             }
 
             divideBtn.setOnClickListener {
-                val isTherePreviousResult =
-                    numberInputField.doesPreviousResultExist(result.text, "/")
+                val isTherePreviousResult = calculatorHelper.doesPreviousResultExist("/")
                 if (isTherePreviousResult) {
+                    numberInputField.setText(calculatorHelper.getTextInput())
                     result.text = ""
+                } else {
+                    numberInputField.setText(calculatorHelper.getTextInput())
                 }
             }
 
             multiplyBtn.setOnClickListener {
-                val isTherePreviousResult =
-                    numberInputField.doesPreviousResultExist(result.text, "×")
+                val isTherePreviousResult = calculatorHelper.doesPreviousResultExist("×")
                 if (isTherePreviousResult) {
+                    numberInputField.setText(calculatorHelper.getTextInput())
                     result.text = ""
+                } else {
+                    numberInputField.setText(calculatorHelper.getTextInput())
                 }
             }
 
             minusBtn.setOnClickListener {
-                val isTherePreviousResult =
-                    numberInputField.doesPreviousResultExist(result.text, "-")
+                val isTherePreviousResult = calculatorHelper.doesPreviousResultExist("-")
                 if (isTherePreviousResult) {
+                    numberInputField.setText(calculatorHelper.getTextInput())
                     result.text = ""
+                } else {
+                    numberInputField.setText(calculatorHelper.getTextInput())
                 }
             }
 
             plusBtn.setOnClickListener {
-                val isTherePreviousResult =
-                    numberInputField.doesPreviousResultExist(result.text, "+")
+                val isTherePreviousResult = calculatorHelper.doesPreviousResultExist("+")
                 if (isTherePreviousResult) {
+                    numberInputField.setText(calculatorHelper.getTextInput())
                     result.text = ""
+                } else {
+                    numberInputField.setText(calculatorHelper.getTextInput())
                 }
             }
 
@@ -165,47 +188,9 @@ class MainActivity : AppCompatActivity() {
 
             equalsBtn.setOnClickListener {
                 val mathematicalOperation = numberInputField.text.toString()
-                when {
-                    mathematicalOperation.contains("+") -> {
-                        val (firstNumber, secondNumber) = getNumbersFromOperation(
-                            mathematicalOperation,
-                            "+"
-                        )
-                        result.text = (firstNumber + secondNumber).toString()
-                    }
-                    mathematicalOperation.contains("-") -> {
-                        val (firstNumber, secondNumber) = getNumbersFromOperation(
-                            mathematicalOperation,
-                            "-"
-                        )
-                        result.text = (firstNumber - secondNumber).toString()
-                    }
-                    mathematicalOperation.contains("×") -> {
-                        val (firstNumber, secondNumber) = getNumbersFromOperation(
-                            mathematicalOperation,
-                            "×"
-                        )
-                        result.text = (firstNumber * secondNumber).toString()
-                    }
-                    mathematicalOperation.contains("/") -> {
-                        val (firstNumber, secondNumber) = getNumbersFromOperation(
-                            mathematicalOperation,
-                            "/"
-                        )
-                        result.text = (firstNumber.toFloat() / secondNumber.toFloat()).toString()
-                    }
-                }
-
+                result.text = calculatorHelper.performEquals()
+                calculatorHelper.setTextResult(result.text.toString())
             }
         }
-    }
-
-    private fun getNumbersFromOperation(
-        mathematicalOperation: String,
-        operation: String
-    ): Pair<Int, Int> {
-        val firstNumber = mathematicalOperation.substringBefore(operation).toInt()
-        val secondNumber = mathematicalOperation.substringAfter(operation).toInt()
-        return firstNumber to secondNumber
     }
 }
