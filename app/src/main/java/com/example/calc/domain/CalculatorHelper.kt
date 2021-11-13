@@ -5,12 +5,12 @@ interface CalculatorHelper {
     fun setTextResult(result: String)
     fun getTextInput(): String
     fun getTextResult(): String
-    fun appendTextInput(newChar: String)
+    fun appendTextInputAtPosition(newChar: String, position: Int)
     fun resetTextInput()
     fun resetResult()
-    fun doesPreviousResultExist(mathematicalOperator: String): Boolean
-    fun doesResultExist(result: CharSequence): Boolean
-    fun performEquals(): String
+    fun addOperatorAt(operator: String, position: Int)
+    fun doesResultExist(): Boolean
+    fun performEquation(): String
 }
 
 class Calculator : CalculatorHelper {
@@ -34,8 +34,10 @@ class Calculator : CalculatorHelper {
         return textResult
     }
 
-    override fun appendTextInput(newChar: String) {
-        textInput += newChar
+    override fun appendTextInputAtPosition(newChar: String, position: Int) {
+        val newEquationBuilder = StringBuilder(textInput)
+        newEquationBuilder.insert(position, newChar)
+        textInput = newEquationBuilder.toString()
     }
 
     override fun resetTextInput() {
@@ -46,52 +48,62 @@ class Calculator : CalculatorHelper {
         textResult = ""
     }
 
-    override fun doesPreviousResultExist(mathematicalOperator: String): Boolean {
-        return if (doesResultExist(textResult)) {
+    override fun addOperatorAt(operator: String, position: Int) {
+        if (doesResultExist()) {
             textInput = textResult
-            textInput setOperator mathematicalOperator
+            textInput setOperator operator
             resetResult()
-            true
         } else {
-            textInput setOperator mathematicalOperator
-            false
+            textInput setOperator operator
         }
     }
 
-    override fun doesResultExist(result: CharSequence): Boolean = result.isNotEmpty()
+    override fun doesResultExist(): Boolean = textResult.isNotEmpty()
 
-    override fun performEquals(): String {
-        return when (findOperationOut()) {
-            Operation.PLUS -> {
-                val (firstNumber, secondNumber) = getNumbersFromOperation(
-                    textInput,
-                    Operation.PLUS.operationSymbol
-                )
-                (firstNumber + secondNumber).toString()
+    override fun performEquation(): String {
+        return if (checkIfEquationIsCorrect(textInput)) {
+            when (findOperationOut()) {
+                Operation.PLUS -> {
+                    val (firstNumber, secondNumber) = getNumbersFromOperation(
+                        textInput,
+                        Operation.PLUS.operationSymbol
+                    )
+                    textResult = (firstNumber + secondNumber).toString()
+                    return textResult
+                }
+                Operation.MINUS -> {
+                    val (firstNumber, secondNumber) = getNumbersFromOperation(
+                        textInput,
+                        Operation.MINUS.operationSymbol
+                    )
+                    textResult = (firstNumber - secondNumber).toString()
+                    return textResult
+                }
+                Operation.DIVISION -> {
+                    val (firstNumber, secondNumber) = getNumbersFromOperation(
+                        textInput,
+                        Operation.DIVISION.operationSymbol
+                    )
+                    textResult = (firstNumber / secondNumber).toString()
+                    return textResult
+                }
+                Operation.MULTIPLICATION -> {
+                    val (firstNumber, secondNumber) = getNumbersFromOperation(
+                        textInput,
+                        Operation.MULTIPLICATION.operationSymbol
+                    )
+                    textResult = (firstNumber * secondNumber).toString()
+                    return textResult
+                }
+                else -> Operation.INVALID.name
             }
-            Operation.MINUS -> {
-                val (firstNumber, secondNumber) = getNumbersFromOperation(
-                    textInput,
-                    Operation.MINUS.operationSymbol
-                )
-                (firstNumber - secondNumber).toString()
-            }
-            Operation.DIVISION -> {
-                val (firstNumber, secondNumber) = getNumbersFromOperation(
-                    textInput,
-                    Operation.DIVISION.operationSymbol
-                )
-                (firstNumber.toFloat() / secondNumber.toFloat()).toString()
-            }
-            Operation.MULTIPLICATION -> {
-                val (firstNumber, secondNumber) = getNumbersFromOperation(
-                    textInput,
-                    Operation.MULTIPLICATION.operationSymbol
-                )
-                (firstNumber * secondNumber).toString()
-            }
-            else -> ""
+        } else {
+            Operation.INVALID.name
         }
+    }
+
+    private fun checkIfEquationIsCorrect(equation: String): Boolean {
+        return MATHEMATICAL_EXPRESSION_VALIDATOR.toRegex().matches(equation)
     }
 
     private fun getNumbersFromOperation(
@@ -103,27 +115,30 @@ class Calculator : CalculatorHelper {
         return firstNumber to secondNumber
     }
 
-
     private fun findOperationOut(): Operation {
         return when {
             textInput.contains("+") -> Operation.PLUS
             textInput.contains("-") -> Operation.MINUS
             textInput.contains("/") -> Operation.DIVISION
             textInput.contains("*") -> Operation.MULTIPLICATION
-            else -> Operation.NOT_AVAILABLE
+            else -> Operation.INVALID
         }
-    }
-
-    enum class Operation(var operationSymbol: String) {
-        PLUS("+"),
-        MINUS("-"),
-        DIVISION("/"),
-        MULTIPLICATION("*"),
-        NOT_AVAILABLE("")
     }
 
     private infix fun String.setOperator(mathematicalOperation: String) {
         textInput += mathematicalOperation
     }
 
+    companion object {
+        private const val MATHEMATICAL_EXPRESSION_VALIDATOR = "^([-+/*]*\\d+(\\.\\d+)?)*"
+    }
+
+}
+
+enum class Operation(var operationSymbol: String) {
+    PLUS("+"),
+    MINUS("-"),
+    DIVISION("/"),
+    MULTIPLICATION("*"),
+    INVALID("")
 }

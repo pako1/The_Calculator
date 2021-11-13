@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.calc.databinding.ActivityMainBinding
 import com.example.calc.domain.Calculator
 import com.example.calc.domain.CalculatorHelper
+import com.example.calc.domain.Operation
 import com.example.calc.domain.toPercent
+import com.google.android.material.textfield.TextInputEditText
 import kotlin.math.sqrt
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +25,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeButtons() {
         with(mainBinding) {
+
+            numberInputField.apply {
+                showSoftInputOnFocus = false
+            }
 
             backspaceBtn.setOnClickListener {
                 val text = numberInputField.text
@@ -62,53 +68,43 @@ class MainActivity : AppCompatActivity() {
             }
 
             oneBtn.setOnClickListener {
-                calculatorHelper.appendTextInput("1")
-                numberInputField.append("1")
+                numberInputField.insertChar("1")
             }
 
             twoBtn.setOnClickListener {
-                calculatorHelper.appendTextInput("2")
-                numberInputField.append("2")
+                numberInputField.insertChar("2")
             }
 
             threeBtn.setOnClickListener {
-                calculatorHelper.appendTextInput("3")
-                numberInputField.append("3")
+                numberInputField.insertChar("3")
             }
 
             fourBtn.setOnClickListener {
-                calculatorHelper.appendTextInput("4")
-                numberInputField.append("4")
+                numberInputField.insertChar("4")
             }
 
             fiveBtn.setOnClickListener {
-                calculatorHelper.appendTextInput("5")
-                numberInputField.append("5")
+                numberInputField.insertChar("5")
             }
 
             sixBtn.setOnClickListener {
-                calculatorHelper.appendTextInput("6")
-                numberInputField.append("6")
+                numberInputField.insertChar("6")
             }
 
             sevenBtn.setOnClickListener {
-                calculatorHelper.appendTextInput("7")
-                numberInputField.append("7")
+                numberInputField.insertChar("7")
             }
 
             eightBtn.setOnClickListener {
-                calculatorHelper.appendTextInput("8")
-                numberInputField.append("8")
+                numberInputField.insertChar("8")
             }
 
             nineBtn.setOnClickListener {
-                calculatorHelper.appendTextInput("9")
-                numberInputField.append("9")
+                numberInputField.insertChar("9")
             }
 
             zeroBtn.setOnClickListener {
-                calculatorHelper.appendTextInput("0")
-                numberInputField.append("0")
+                numberInputField.insertChar("0")
             }
 
             acBtn.setOnClickListener {
@@ -119,7 +115,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             divideBtn.setOnClickListener {
-                val isTherePreviousResult = calculatorHelper.doesPreviousResultExist("/")
+                val isTherePreviousResult = calculatorHelper.doesResultExist()
                 if (isTherePreviousResult) {
                     numberInputField.setText(calculatorHelper.getTextInput())
                     result.text = ""
@@ -129,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             multiplyBtn.setOnClickListener {
-                val isTherePreviousResult = calculatorHelper.doesPreviousResultExist("×")
+                val isTherePreviousResult = calculatorHelper.doesResultExist()
                 if (isTherePreviousResult) {
                     numberInputField.setText(calculatorHelper.getTextInput())
                     result.text = ""
@@ -139,7 +135,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             minusBtn.setOnClickListener {
-                val isTherePreviousResult = calculatorHelper.doesPreviousResultExist("-")
+                val isTherePreviousResult = calculatorHelper.doesResultExist()
                 if (isTherePreviousResult) {
                     numberInputField.setText(calculatorHelper.getTextInput())
                     result.text = ""
@@ -149,12 +145,15 @@ class MainActivity : AppCompatActivity() {
             }
 
             plusBtn.setOnClickListener {
-                val isTherePreviousResult = calculatorHelper.doesPreviousResultExist("+")
+                val isTherePreviousResult = calculatorHelper.doesResultExist()
                 if (isTherePreviousResult) {
-                    numberInputField.setText(calculatorHelper.getTextInput())
+                    numberInputField.setText(calculatorHelper.getTextResult())
+                    calculatorHelper.setTextInput(calculatorHelper.getTextResult())
+                    numberInputField.insertChar("+")
+                    calculatorHelper.resetResult()
                     result.text = ""
                 } else {
-                    numberInputField.setText(calculatorHelper.getTextInput())
+                    numberInputField.insertChar("+")
                 }
             }
 
@@ -187,10 +186,18 @@ class MainActivity : AppCompatActivity() {
             }
 
             equalsBtn.setOnClickListener {
-                val mathematicalOperation = numberInputField.text.toString()
-                result.text = calculatorHelper.performEquals()
-                calculatorHelper.setTextResult(result.text.toString())
+                val operationResult = calculatorHelper.performEquation()
+                if (operationResult == Operation.INVALID.name) {
+                    return@setOnClickListener
+                }
+                result.text = operationResult
             }
         }
+    }
+
+    private fun TextInputEditText.insertChar(number: String){
+        val currentCursorPosition = selectionEnd
+        calculatorHelper.appendTextInputAtPosition(number,currentCursorPosition)
+        text?.insert(currentCursorPosition,number)
     }
 }
