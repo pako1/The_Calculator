@@ -142,7 +142,11 @@ class MainActivity : AppCompatActivity() {
                     numberInputField.setText(calculatorHelper.getTextInput())
                     result.text = ""
                 } else {
-                    numberInputField.setText(calculatorHelper.getTextInput())
+                    if (numberInputField.length() == 0 || (numberInputField.length() > 0 && numberInputField.selectionStart == 0)) {
+                        return@setOnClickListener
+                    } else {
+                        numberInputField.insertChar("-")
+                    }
                 }
             }
 
@@ -157,7 +161,7 @@ class MainActivity : AppCompatActivity() {
                     calculatorHelper.resetResult()
                     result.text = ""
                 } else {
-                    if (numberInputField.containsOperatorAlready('+')) {
+                    if ((numberInputField.length() >= 0 && numberInputField.selectionStart == 0) || numberInputField.doesContainOperator()) {
                         return@setOnClickListener
                     } else {
                         numberInputField.insertChar("+")
@@ -206,12 +210,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun TextInputEditText.containsOperatorAlready(operator: Char): Boolean {
-        return if (editableText.isNullOrEmpty()) {
-            false
-        } else {
-            editableText.last() == operator || editableText.first() == operator
-        }
+    private fun TextInputEditText.doesContainOperator(): Boolean {
+        return calculatorHelper.containsAlreadyOperatorAtPosition(selectionStart)
     }
 
     private fun TextInputEditText.insertChar(number: String) {

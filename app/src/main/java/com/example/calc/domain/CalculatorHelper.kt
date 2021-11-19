@@ -11,6 +11,7 @@ interface CalculatorHelper {
     fun addOperatorAt(operator: String, position: Int)
     fun doesResultExist(): Boolean
     fun performEquation(): String
+    fun containsAlreadyOperatorAtPosition(position: Int): Boolean
 }
 
 class Calculator : CalculatorHelper {
@@ -124,6 +125,17 @@ class Calculator : CalculatorHelper {
         } else {
             Operation.INVALID.name
         }
+    }
+
+    override fun containsAlreadyOperatorAtPosition(position: Int): Boolean {
+        var containsAlreadyOperator = false
+        Operation.values().forEach {
+            if (containsAlreadyOperator){
+                return@forEach
+            }
+            containsAlreadyOperator = textInput[position-1].toString() == it.operationSymbol
+        }
+        return containsAlreadyOperator
     }
 
     private fun checkIfEquationIsCorrect(equation: String): Boolean {
