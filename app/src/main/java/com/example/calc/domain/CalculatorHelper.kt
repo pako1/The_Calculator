@@ -64,6 +64,12 @@ class Calculator : CalculatorHelper {
         return if (checkIfEquationIsCorrect(textInput)) {
             when (findOperationOut()) {
                 Operation.PLUS -> {
+                    if (denotesPlusOrMinusSign(textInput, Operation.PLUS.operationSymbol)) {
+                        return Operation.DONATING_SIGN.name
+                    }
+                    if (isEquationNotComplete(textInput, Operation.PLUS.operationSymbol)) {
+                        return Operation.INCOMPLETE.name
+                    }
                     val (firstNumber, secondNumber) = getNumbersFromOperation(
                         textInput,
                         Operation.PLUS.operationSymbol
@@ -72,6 +78,12 @@ class Calculator : CalculatorHelper {
                     return textResult
                 }
                 Operation.MINUS -> {
+                    if (denotesPlusOrMinusSign(textInput, Operation.PLUS.operationSymbol)) {
+                        return Operation.DONATING_SIGN.name
+                    }
+                    if (isEquationNotComplete(textInput, Operation.PLUS.operationSymbol)) {
+                        return Operation.INCOMPLETE.name
+                    }
                     val (firstNumber, secondNumber) = getNumbersFromOperation(
                         textInput,
                         Operation.MINUS.operationSymbol
@@ -80,6 +92,12 @@ class Calculator : CalculatorHelper {
                     return textResult
                 }
                 Operation.DIVISION -> {
+                    if (denotesPlusOrMinusSign(textInput, Operation.PLUS.operationSymbol)) {
+                        return Operation.DONATING_SIGN.name
+                    }
+                    if (isEquationNotComplete(textInput, Operation.PLUS.operationSymbol)) {
+                        return Operation.INCOMPLETE.name
+                    }
                     val (firstNumber, secondNumber) = getNumbersFromOperation(
                         textInput,
                         Operation.DIVISION.operationSymbol
@@ -88,6 +106,12 @@ class Calculator : CalculatorHelper {
                     return textResult
                 }
                 Operation.MULTIPLICATION -> {
+                    if (denotesPlusOrMinusSign(textInput, Operation.PLUS.operationSymbol)) {
+                        return Operation.DONATING_SIGN.name
+                    }
+                    if (isEquationNotComplete(textInput, Operation.PLUS.operationSymbol)) {
+                        return Operation.INCOMPLETE.name
+                    }
                     val (firstNumber, secondNumber) = getNumbersFromOperation(
                         textInput,
                         Operation.MULTIPLICATION.operationSymbol
@@ -115,6 +139,20 @@ class Calculator : CalculatorHelper {
         return firstNumber to secondNumber
     }
 
+    private fun denotesPlusOrMinusSign(mathematicalOperation: String, operation: String): Boolean {
+        var numberOfOperators = 0
+        mathematicalOperation.forEach { if (it == '+' || it == '-') numberOfOperators += 1 }
+        return if (numberOfOperators > 1) {
+            false
+        } else {
+            mathematicalOperation.substringBefore(operation).isEmpty()
+        }
+    }
+
+    private fun isEquationNotComplete(mathematicalOperation: String, operation: String): Boolean {
+        return mathematicalOperation.substringAfter(operation).isEmpty()
+    }
+
     private fun findOperationOut(): Operation {
         return when {
             textInput.contains("+") -> Operation.PLUS
@@ -140,5 +178,7 @@ enum class Operation(var operationSymbol: String) {
     MINUS("-"),
     DIVISION("/"),
     MULTIPLICATION("*"),
-    INVALID("")
+    INVALID(""),
+    INCOMPLETE(""),
+    DONATING_SIGN("")
 }

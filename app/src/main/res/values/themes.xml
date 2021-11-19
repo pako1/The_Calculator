@@ -10,6 +10,7 @@
         <item name="colorSecondary">#4c5f65</item>
         <item name="colorSecondaryVariant">#788c93</item>
         <item name="colorOnSecondary">@color/black</item>
+        <item name="android:colorControlActivated">@color/black</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>

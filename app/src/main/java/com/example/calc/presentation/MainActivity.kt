@@ -33,33 +33,35 @@ class MainActivity : AppCompatActivity() {
             backspaceBtn.setOnClickListener {
                 val text = numberInputField.text
                 if (!text.isNullOrEmpty()) {
-                    val updatedText = text.toString().trim()
                     when (val cursorPosition = numberInputField.selectionStart) {
                         0 -> return@setOnClickListener
                         1 -> {
-                            val remainingText = updatedText.substring(1, updatedText.length)
+                            val remainingText = text.substring(1, text.length)
+                            calculatorHelper.setTextInput(remainingText)
                             numberInputField.setText(remainingText)
                             numberInputField.setSelection(0)
                             result.text = if (remainingText == "%") "" else remainingText
                         }
-                        updatedText.length -> {
-                            if (updatedText.last() == '%') {
+                        text.length -> {
+                            if (text.last() == '%') {
                                 result.text = ""
                             }
-                            val remainingText = updatedText.substring(0, updatedText.length - 1)
+                            val remainingText = text.substring(0, text.length - 1)
+                            calculatorHelper.setTextInput(remainingText)
                             numberInputField.setText(remainingText)
                             numberInputField.setSelection(remainingText.length)
                         }
                         else -> {
                             val remainingTextFirstPart =
-                                updatedText.substring(0, cursorPosition - 1)
+                                text.substring(0, cursorPosition - 1)
                             val remainingTextSecondPart =
-                                updatedText.substring(cursorPosition, updatedText.length)
+                                text.substring(cursorPosition, text.length)
                             val finalText = remainingTextFirstPart + remainingTextSecondPart
                             if (finalText.contains("%") && finalText.length > 1) {
                                 result.text =
                                     finalText.substring(0, finalText.length - 1).toPercent()
                             }
+                            calculatorHelper.setTextInput(finalText)
                             numberInputField.setText(finalText)
                             numberInputField.setSelection(remainingTextFirstPart.length)
                         }
@@ -147,13 +149,19 @@ class MainActivity : AppCompatActivity() {
             plusBtn.setOnClickListener {
                 val isTherePreviousResult = calculatorHelper.doesResultExist()
                 if (isTherePreviousResult) {
-                    numberInputField.setText(calculatorHelper.getTextResult())
-                    calculatorHelper.setTextInput(calculatorHelper.getTextResult())
+                    val calculationResult = calculatorHelper.getTextResult()
+                    numberInputField.setText(calculationResult)
+                    calculatorHelper.setTextInput(calculationResult)
+                    numberInputField.setSelection(calculationResult.length)
                     numberInputField.insertChar("+")
                     calculatorHelper.resetResult()
                     result.text = ""
                 } else {
-                    numberInputField.insertChar("+")
+                    if (numberInputField.containsOperatorAlready('+')) {
+                        return@setOnClickListener
+                    } else {
+                        numberInputField.insertChar("+")
+                    }
                 }
             }
 
@@ -186,18 +194,29 @@ class MainActivity : AppCompatActivity() {
             }
 
             equalsBtn.setOnClickListener {
-                val operationResult = calculatorHelper.performEquation()
-                if (operationResult == Operation.INVALID.name) {
-                    return@setOnClickListener
+                when (val operationResult = calculatorHelper.performEquation()) {
+                    Operation.INVALID.name, Operation.INCOMPLETE.name, Operation.DONATING_SIGN.name -> {
+                        return@setOnClickListener
+                    }
+                    else -> {
+                        result.text = operationResult
+                    }
                 }
-                result.text = operationResult
             }
         }
     }
 
-    private fun TextInputEditText.insertChar(number: String){
+    private fun TextInputEditText.containsOperatorAlready(operator: Char): Boolean {
+        return if (editableText.isNullOrEmpty()) {
+            false
+        } else {
+            editableText.last() == operator || editableText.first() == operator
+        }
+    }
+
+    private fun TextInputEditText.insertChar(number: String) {
         val currentCursorPosition = selectionEnd
-        calculatorHelper.appendTextInputAtPosition(number,currentCursorPosition)
-        text?.insert(currentCursorPosition,number)
+        calculatorHelper.appendTextInputAtPosition(number, currentCursorPosition)
+        text?.insert(currentCursorPosition, number)
     }
 }
