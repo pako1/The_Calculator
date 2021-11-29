@@ -70,45 +70,25 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            oneBtn.setOnClickListener {
-                numberInputField.insertChar("1")
-            }
+            oneBtn.setOnClickListener { numberInputField.insertChar("1") }
 
-            twoBtn.setOnClickListener {
-                numberInputField.insertChar("2")
-            }
+            twoBtn.setOnClickListener { numberInputField.insertChar("2") }
 
-            threeBtn.setOnClickListener {
-                numberInputField.insertChar("3")
-            }
+            threeBtn.setOnClickListener { numberInputField.insertChar("3") }
 
-            fourBtn.setOnClickListener {
-                numberInputField.insertChar("4")
-            }
+            fourBtn.setOnClickListener { numberInputField.insertChar("4") }
 
-            fiveBtn.setOnClickListener {
-                numberInputField.insertChar("5")
-            }
+            fiveBtn.setOnClickListener { numberInputField.insertChar("5") }
 
-            sixBtn.setOnClickListener {
-                numberInputField.insertChar("6")
-            }
+            sixBtn.setOnClickListener { numberInputField.insertChar("6") }
 
-            sevenBtn.setOnClickListener {
-                numberInputField.insertChar("7")
-            }
+            sevenBtn.setOnClickListener { numberInputField.insertChar("7") }
 
-            eightBtn.setOnClickListener {
-                numberInputField.insertChar("8")
-            }
+            eightBtn.setOnClickListener { numberInputField.insertChar("8") }
 
-            nineBtn.setOnClickListener {
-                numberInputField.insertChar("9")
-            }
+            nineBtn.setOnClickListener { numberInputField.insertChar("9") }
 
-            zeroBtn.setOnClickListener {
-                numberInputField.insertChar("0")
-            }
+            zeroBtn.setOnClickListener { numberInputField.insertChar("0") }
 
             acBtn.setOnClickListener {
                 calculatorHelper.resetResult()
@@ -117,25 +97,9 @@ class MainActivity : AppCompatActivity() {
                 result.text = ""
             }
 
-            divideBtn.setOnClickListener {
-                val isTherePreviousResult = calculatorHelper.doesResultExist()
-                if (isTherePreviousResult) {
-                    numberInputField.setText(calculatorHelper.getTextInput())
-                    result.text = ""
-                } else {
-                    numberInputField.setText(calculatorHelper.getTextInput())
-                }
-            }
+            divideBtn.setOnClickListener { applyOperatorOnEquation("/", numberInputField, result) }
 
-            multiplyBtn.setOnClickListener {
-                val isTherePreviousResult = calculatorHelper.doesResultExist()
-                if (isTherePreviousResult) {
-                    numberInputField.setText(calculatorHelper.getTextInput())
-                    result.text = ""
-                } else {
-                    numberInputField.setText(calculatorHelper.getTextInput())
-                }
-            }
+            multiplyBtn.setOnClickListener { applyOperatorOnEquation("×", numberInputField, result) }
 
             minusBtn.setOnClickListener { applyOperatorOnEquation("-", numberInputField, result) }
 
@@ -151,7 +115,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             squareBtn.setOnClickListener {
-                val inputFieldText = numberInputField.text?.toString()?.toDouble() ?: return@setOnClickListener
+                val inputFieldText =
+                    numberInputField.text?.toString()?.toDouble() ?: return@setOnClickListener
                 result.text = sqrt(inputFieldText).toString()
             }
 
