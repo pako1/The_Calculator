@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity() {
                             numberInputField.setText(remainingText)
                             numberInputField.setSelection(0)
                             result.text = if (remainingText == "%") "" else remainingText
+                            if (result.text.isNullOrEmpty()) {
+                                calculatorHelper.setTextResult(remainingText)
+                            }
                         }
                         text.length -> {
                             if (text.last() == '%') {
@@ -99,7 +102,13 @@ class MainActivity : AppCompatActivity() {
 
             divideBtn.setOnClickListener { applyOperatorOnEquation("/", numberInputField, result) }
 
-            multiplyBtn.setOnClickListener { applyOperatorOnEquation("×", numberInputField, result) }
+            multiplyBtn.setOnClickListener {
+                applyOperatorOnEquation(
+                    "×",
+                    numberInputField,
+                    result
+                )
+            }
 
             minusBtn.setOnClickListener { applyOperatorOnEquation("-", numberInputField, result) }
 
