@@ -88,7 +88,7 @@
                 <androidx.constraintlayout.helper.widget.Flow
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="ac_btn,square_btn,percent_btn,divide_btn,seven_btn,eight_btn,nine_btn,multiply_btn,four_btn,five_btn,six_btn,minus_btn,one_btn,two_btn,three_btn,plus_btn,positive_negative_converter_btn,zero_btn,decimal_btn,equals_btn"
+                    app:constraint_referenced_ids="ac_btn,square_btn,percent_btn,divide_btn,seven_btn,eight_btn,nine_btn,multiply_btn,four_btn,five_btn,six_btn,minus_btn,one_btn,two_btn,three_btn,plus_btn,positive_negative_converter_btn,zero_btn,dot_btn,equals_btn"
                     app:flow_maxElementsWrap="4"
                     app:flow_verticalGap="12dp"
                     app:flow_wrapMode="aligned"
@@ -223,7 +223,7 @@
                     android:text="@string/zero_button_text" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/decimal_btn"
+                    android:id="@+id/dot_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"

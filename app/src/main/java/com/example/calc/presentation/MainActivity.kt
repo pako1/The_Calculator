@@ -93,6 +93,8 @@ class MainActivity : AppCompatActivity() {
 
             zeroBtn.setOnClickListener { numberInputField.insertChar("0") }
 
+            dotBtn.setOnClickListener { numberInputField.insertChar(".") }
+
             acBtn.setOnClickListener {
                 calculatorHelper.resetResult()
                 calculatorHelper.resetTextInput()

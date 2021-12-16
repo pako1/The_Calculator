@@ -75,7 +75,7 @@ class Calculator : CalculatorHelper {
                         textInput,
                         Operation.PLUS.operationSymbol
                     )
-                    textResult = (firstNumber + secondNumber).toString()
+                    textResult = (firstNumber + secondNumber).modifyDisplayedResult()
                     return textResult
                 }
                 Operation.MINUS -> {
@@ -89,7 +89,7 @@ class Calculator : CalculatorHelper {
                         textInput,
                         Operation.MINUS.operationSymbol
                     )
-                    textResult = (firstNumber - secondNumber).toString()
+                    textResult = (firstNumber - secondNumber).modifyDisplayedResult()
                     return textResult
                 }
                 Operation.DIVISION -> {
@@ -103,7 +103,8 @@ class Calculator : CalculatorHelper {
                         textInput,
                         Operation.DIVISION.operationSymbol
                     )
-                    textResult = (firstNumber / secondNumber).toString()
+
+                    textResult = (firstNumber / secondNumber).modifyDisplayedResult()
                     return textResult
                 }
                 Operation.MULTIPLICATION -> {
@@ -117,7 +118,7 @@ class Calculator : CalculatorHelper {
                         textInput,
                         Operation.MULTIPLICATION.operationSymbol
                     )
-                    textResult = (firstNumber * secondNumber).toString()
+                    textResult = (firstNumber * secondNumber).modifyDisplayedResult()
                     return textResult
                 }
                 else -> Operation.INVALID.name
@@ -127,28 +128,38 @@ class Calculator : CalculatorHelper {
         }
     }
 
+    private fun getNumbersFromOperation(
+        mathematicalOperation: String,
+        operation: String
+    ): Pair<Double, Double> {
+        val firstNumber = mathematicalOperation.substringBefore(operation).toDouble()
+        val secondNumber = mathematicalOperation.substringAfter(operation).toDouble()
+        return firstNumber to secondNumber
+    }
+
+    private fun Double.modifyDisplayedResult(): String {
+        return if (isNumberARealDouble(this)) {
+            this.toString()
+        } else {
+            (this.toInt()).toString()
+        }
+    }
+
+    private fun isNumberARealDouble(number: Double): Boolean = number % 1 != 0.0
+
     override fun containsAlreadyOperatorAtPosition(position: Int): Boolean {
         var containsAlreadyOperator = false
         Operation.values().forEach {
-            if (containsAlreadyOperator){
+            if (containsAlreadyOperator) {
                 return@forEach
             }
-            containsAlreadyOperator = textInput[position-1].toString() == it.operationSymbol
+            containsAlreadyOperator = textInput[position - 1].toString() == it.operationSymbol
         }
         return containsAlreadyOperator
     }
 
     private fun checkIfEquationIsCorrect(equation: String): Boolean {
         return MATHEMATICAL_EXPRESSION_VALIDATOR.toRegex().matches(equation)
-    }
-
-    private fun getNumbersFromOperation(
-        mathematicalOperation: String,
-        operation: String
-    ): Pair<Int, Int> {
-        val firstNumber = mathematicalOperation.substringBefore(operation).toInt()
-        val secondNumber = mathematicalOperation.substringAfter(operation).toInt()
-        return firstNumber to secondNumber
     }
 
     private fun denotesPlusOrMinusSign(mathematicalOperation: String, operation: String): Boolean {
