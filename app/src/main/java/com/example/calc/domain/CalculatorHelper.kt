@@ -181,7 +181,7 @@ class Calculator : CalculatorHelper {
             textInput.contains("+") -> Operation.PLUS
             textInput.contains("-") -> Operation.MINUS
             textInput.contains("/") -> Operation.DIVISION
-            textInput.contains("*") -> Operation.MULTIPLICATION
+            textInput.contains("×") -> Operation.MULTIPLICATION
             else -> Operation.INVALID
         }
     }
@@ -191,7 +191,7 @@ class Calculator : CalculatorHelper {
     }
 
     companion object {
-        private const val MATHEMATICAL_EXPRESSION_VALIDATOR = "^([-+/*]*\\d+(\\.\\d+)?)*"
+        private const val MATHEMATICAL_EXPRESSION_VALIDATOR = "^([-+/×]*\\d+(\\.\\d+)?)*"
     }
 
 }
@@ -200,7 +200,7 @@ enum class Operation(var operationSymbol: String) {
     PLUS("+"),
     MINUS("-"),
     DIVISION("/"),
-    MULTIPLICATION("*"),
+    MULTIPLICATION("×"),
     INVALID(""),
     INCOMPLETE(""),
     DONATING_SIGN("")
