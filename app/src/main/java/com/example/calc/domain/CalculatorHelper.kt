@@ -52,10 +52,10 @@ class Calculator : CalculatorHelper {
     override fun addOperatorAt(operator: String, position: Int) {
         if (doesResultExist()) {
             textInput = textResult
-            textInput setOperator operator
+            textInput set operator
             resetResult()
         } else {
-            textInput setOperator operator
+            textInput set operator
         }
     }
 
@@ -186,8 +186,8 @@ class Calculator : CalculatorHelper {
         }
     }
 
-    private infix fun String.setOperator(mathematicalOperation: String) {
-        textInput += mathematicalOperation
+    private infix fun String.set(character: String) {
+        textInput += character
     }
 
     companion object {
