@@ -18,7 +18,7 @@ interface CalculatorHelper {
     fun containsAlreadyOperatorAtPosition(position: Int): Boolean
     fun modifyDisplayedResult(number: Double): String
     fun isRootingPossible(textInput: String): Boolean
-    fun isApplyingPercentagePossible(textInput: String) : Boolean
+    fun isApplyingPercentagePossible(textInput: String): Boolean
 }
 
 class Calculator : CalculatorHelper {
@@ -145,29 +145,23 @@ class Calculator : CalculatorHelper {
     }
 
     override fun modifyDisplayedResult(number: Double): String {
-        return if (isNumberARealDouble(number)) {
-            val df = DecimalFormat(DECIMAL_FORMAT, DecimalFormatSymbols.getInstance(Locale.US))
-            df.format(number)
-        } else {
-            (number.toInt()).toString()
-        }
+        val df = DecimalFormat(DECIMAL_FORMAT, DecimalFormatSymbols.getInstance(Locale.US))
+        return df.format(number)
     }
 
     override fun isRootingPossible(textInput: String): Boolean {
         val operator = findOperationOut()
         return (operator != Operation.INVALID
-                && !isEquationNotComplete(textInput,operator.operationSymbol))
+                && !isEquationNotComplete(textInput, operator.operationSymbol))
                 || operator == Operation.INVALID
     }
 
     override fun isApplyingPercentagePossible(textInput: String): Boolean {
         val operator = findOperationOut()
         return (operator != Operation.INVALID
-                && !isEquationNotComplete(textInput,operator.operationSymbol))
+                && !isEquationNotComplete(textInput, operator.operationSymbol))
                 || operator == Operation.INVALID
     }
-
-    private fun isNumberARealDouble(number: Double): Boolean = number % 1 != 0.0
 
     override fun containsAlreadyOperatorAtPosition(position: Int): Boolean {
         var containsAlreadyOperator = false
