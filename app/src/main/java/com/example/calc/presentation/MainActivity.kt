@@ -128,8 +128,9 @@ class MainActivity : AppCompatActivity() {
                     numberInputField.append("%")
                     calculatorHelper.setTextInput(calculationResult)
                     calculatorHelper.resetResult()
-                    result.text =
-                        calculatorHelper.modifyDisplayedResult(calculationResult.toPercent())
+                    val percentageResult = calculatorHelper.modifyDisplayedResult(calculationResult.toPercent())
+                    result.text = percentageResult
+                    calculatorHelper.setTextResult(percentageResult)
                 } else {
                     val inputFieldText = numberInputField.text?.toString()
                     if (!inputFieldText.isNullOrEmpty() && !inputFieldText.contains("%")) {

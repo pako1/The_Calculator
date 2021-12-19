@@ -1,5 +1,9 @@
 package com.example.calc.domain
 
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
+
 interface CalculatorHelper {
     fun setTextInput(input: String)
     fun setTextResult(result: String)
@@ -140,7 +144,8 @@ class Calculator : CalculatorHelper {
 
     override fun modifyDisplayedResult(number: Double): String {
         return if (isNumberARealDouble(number)) {
-            number.toString()
+            val df = DecimalFormat(DECIMAL_FORMAT, DecimalFormatSymbols.getInstance(Locale.US))
+            df.format(number)
         } else {
             (number.toInt()).toString()
         }
@@ -192,6 +197,7 @@ class Calculator : CalculatorHelper {
     }
 
     companion object {
+        private const val DECIMAL_FORMAT = "#.#############"
         private const val MATHEMATICAL_EXPRESSION_VALIDATOR = "^([-+/×]*\\d+(\\.\\d+)?)*"
     }
 
