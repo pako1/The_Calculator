@@ -1,5 +1,5 @@
 package com.example.calc.domain
 
-fun String.toPercent(): String {
-    return (toInt() / 100f).toString()
+fun String.toPercent(): Double {
+    return (toDouble() / 100f)
 }

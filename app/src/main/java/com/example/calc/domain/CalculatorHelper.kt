@@ -12,6 +12,7 @@ interface CalculatorHelper {
     fun doesResultExist(): Boolean
     fun performEquation(): String
     fun containsAlreadyOperatorAtPosition(position: Int): Boolean
+    fun modifyDisplayedResult(number: Double): String
 }
 
 class Calculator : CalculatorHelper {
@@ -75,7 +76,7 @@ class Calculator : CalculatorHelper {
                         textInput,
                         Operation.PLUS.operationSymbol
                     )
-                    textResult = (firstNumber + secondNumber).modifyDisplayedResult()
+                    textResult = modifyDisplayedResult(firstNumber + secondNumber)
                     return textResult
                 }
                 Operation.MINUS -> {
@@ -89,7 +90,7 @@ class Calculator : CalculatorHelper {
                         textInput,
                         Operation.MINUS.operationSymbol
                     )
-                    textResult = (firstNumber - secondNumber).modifyDisplayedResult()
+                    textResult = modifyDisplayedResult(firstNumber - secondNumber)
                     return textResult
                 }
                 Operation.DIVISION -> {
@@ -104,7 +105,7 @@ class Calculator : CalculatorHelper {
                         Operation.DIVISION.operationSymbol
                     )
 
-                    textResult = (firstNumber / secondNumber).modifyDisplayedResult()
+                    textResult = modifyDisplayedResult(firstNumber / secondNumber)
                     return textResult
                 }
                 Operation.MULTIPLICATION -> {
@@ -118,7 +119,7 @@ class Calculator : CalculatorHelper {
                         textInput,
                         Operation.MULTIPLICATION.operationSymbol
                     )
-                    textResult = (firstNumber * secondNumber).modifyDisplayedResult()
+                    textResult = modifyDisplayedResult(firstNumber * secondNumber)
                     return textResult
                 }
                 else -> Operation.INVALID.name
@@ -137,11 +138,11 @@ class Calculator : CalculatorHelper {
         return firstNumber to secondNumber
     }
 
-    private fun Double.modifyDisplayedResult(): String {
-        return if (isNumberARealDouble(this)) {
-            this.toString()
+    override fun modifyDisplayedResult(number: Double): String {
+        return if (isNumberARealDouble(number)) {
+            number.toString()
         } else {
-            (this.toInt()).toString()
+            (number.toInt()).toString()
         }
     }
 

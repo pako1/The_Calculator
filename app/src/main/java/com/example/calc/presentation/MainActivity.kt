@@ -62,8 +62,12 @@ class MainActivity : AppCompatActivity() {
                                 text.substring(cursorPosition, text.length)
                             val finalText = remainingTextFirstPart + remainingTextSecondPart
                             if (finalText.contains("%") && finalText.length > 1) {
-                                result.text =
-                                    finalText.substring(0, finalText.length - 1).toPercent()
+                                result.text = calculatorHelper.modifyDisplayedResult(
+                                    finalText.substring(
+                                        0,
+                                        finalText.length - 1
+                                    ).toPercent()
+                                )
                             }
                             calculatorHelper.setTextInput(finalText)
                             numberInputField.setText(finalText)
@@ -117,11 +121,24 @@ class MainActivity : AppCompatActivity() {
             plusBtn.setOnClickListener { applyOperatorOnEquation("+", numberInputField, result) }
 
             percentBtn.setOnClickListener {
-                val inputFieldText = numberInputField.text?.toString()
-                if (!inputFieldText.isNullOrEmpty() && !inputFieldText.contains("%")) {
-                    val numberInPercentage = inputFieldText.toPercent()
+                val isTherePreviousResult = calculatorHelper.doesResultExist()
+                if (isTherePreviousResult) {
+                    val calculationResult = calculatorHelper.getTextResult()
+                    numberInputField.setText(calculationResult)
                     numberInputField.append("%")
-                    result.text = numberInPercentage
+                    calculatorHelper.setTextInput(calculationResult)
+                    calculatorHelper.resetResult()
+                    result.text =
+                        calculatorHelper.modifyDisplayedResult(calculationResult.toPercent())
+                } else {
+                    val inputFieldText = numberInputField.text?.toString()
+                    if (!inputFieldText.isNullOrEmpty() && !inputFieldText.contains("%")) {
+                        val numberInPercentage =
+                            calculatorHelper.modifyDisplayedResult(inputFieldText.toPercent())
+                        numberInputField.append("%")
+                        result.text = numberInPercentage
+                        calculatorHelper.setTextResult(numberInPercentage)
+                    }
                 }
             }
 
