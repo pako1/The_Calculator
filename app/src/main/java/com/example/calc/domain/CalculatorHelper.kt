@@ -17,6 +17,8 @@ interface CalculatorHelper {
     fun performEquation(): String
     fun containsAlreadyOperatorAtPosition(position: Int): Boolean
     fun modifyDisplayedResult(number: Double): String
+    fun isRootingPossible(textInput: String): Boolean
+    fun isApplyingPercentagePossible(textInput: String) : Boolean
 }
 
 class Calculator : CalculatorHelper {
@@ -149,6 +151,20 @@ class Calculator : CalculatorHelper {
         } else {
             (number.toInt()).toString()
         }
+    }
+
+    override fun isRootingPossible(textInput: String): Boolean {
+        val operator = findOperationOut()
+        return (operator != Operation.INVALID
+                && !isEquationNotComplete(textInput,operator.operationSymbol))
+                || operator == Operation.INVALID
+    }
+
+    override fun isApplyingPercentagePossible(textInput: String): Boolean {
+        val operator = findOperationOut()
+        return (operator != Operation.INVALID
+                && !isEquationNotComplete(textInput,operator.operationSymbol))
+                || operator == Operation.INVALID
     }
 
     private fun isNumberARealDouble(number: Double): Boolean = number % 1 != 0.0

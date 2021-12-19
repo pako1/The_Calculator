@@ -138,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                     calculatorHelper.setTextResult(percentageResult)
                 } else {
                     val inputFieldText = numberInputField.text?.toString()
-                    if (!inputFieldText.isNullOrEmpty() && !inputFieldText.contains("%")) {
+                    if (!inputFieldText.isNullOrEmpty() && !inputFieldText.contains("%") && calculatorHelper.isApplyingPercentagePossible(inputFieldText)) {
                         val numberInPercentage =
                             calculatorHelper.modifyDisplayedResult(inputFieldText.toPercent())
                         numberInputField.append("%")
@@ -158,10 +158,12 @@ class MainActivity : AppCompatActivity() {
                     result.text = sqrt(calculationResult.toDouble()).toString()
                 } else {
                     val inputFieldText = numberInputField.text?.toString()
-                    if (!inputFieldText.isNullOrEmpty()) {
+                    if (!inputFieldText.isNullOrEmpty() && calculatorHelper.isRootingPossible(inputFieldText)) {
                         val root = sqrt(inputFieldText.toDouble()).toString()
                         result.text = root
                         calculatorHelper.setTextResult(root)
+                    }else{
+
                     }
                 }
             }
