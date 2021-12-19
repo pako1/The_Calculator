@@ -136,10 +136,13 @@ class MainActivity : AppCompatActivity() {
                         calculatorHelper.modifyDisplayedResult(calculationResult.toPercent())
                     result.text = percentageResult
                     calculatorHelper.setTextResult(percentageResult)
-                    numberInputField.setSelection(percentageResult.length)
+                    numberInputField.setSelection(numberInputField.selectionEnd)
                 } else {
                     val inputFieldText = numberInputField.text?.toString()
-                    if (!inputFieldText.isNullOrEmpty() && !inputFieldText.contains("%") && calculatorHelper.isApplyingPercentagePossible(inputFieldText)) {
+                    if (!inputFieldText.isNullOrEmpty() && !inputFieldText.contains("%") && calculatorHelper.isApplyingPercentagePossible(
+                            inputFieldText
+                        )
+                    ) {
                         val numberInPercentage =
                             calculatorHelper.modifyDisplayedResult(inputFieldText.toPercent())
                         numberInputField.append("%")
@@ -157,10 +160,13 @@ class MainActivity : AppCompatActivity() {
                     calculatorHelper.setTextInput(calculationResult)
                     calculatorHelper.resetResult()
                     result.text = sqrt(calculationResult.toDouble()).toString()
-                    numberInputField.setSelection(calculationResult.length)
+                    numberInputField.setSelection(numberInputField.selectionEnd)
                 } else {
                     val inputFieldText = numberInputField.text?.toString()
-                    if (!inputFieldText.isNullOrEmpty() && calculatorHelper.isRootingPossible(inputFieldText) && calculatorHelper.isRootingPossible(inputFieldText)) {
+                    if (!inputFieldText.isNullOrEmpty() && calculatorHelper.isRootingPossible(
+                            inputFieldText
+                        ) && calculatorHelper.isRootingPossible(inputFieldText)
+                    ) {
                         val root = sqrt(inputFieldText.toDouble()).toString()
                         result.text = root
                         calculatorHelper.setTextResult(root)
@@ -220,9 +226,9 @@ class MainActivity : AppCompatActivity() {
         return calculatorHelper.containsAlreadyOperatorAtPosition(selectionStart)
     }
 
-    private fun TextInputEditText.insertChar(number: String) {
+    private fun TextInputEditText.insertChar(newChar: String) {
         val currentCursorPosition = selectionEnd
-        calculatorHelper.appendTextInputAtPosition(number, currentCursorPosition)
-        text?.insert(currentCursorPosition, number)
+        calculatorHelper.appendTextInputAtPosition(newChar, currentCursorPosition)
+        text?.insert(currentCursorPosition, newChar)
     }
 }

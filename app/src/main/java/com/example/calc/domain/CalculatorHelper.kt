@@ -207,7 +207,7 @@ class Calculator : CalculatorHelper {
     }
 
     companion object {
-        private const val DECIMAL_FORMAT = "#.#############"
+        private const val DECIMAL_FORMAT = "#.################"
         private const val MATHEMATICAL_EXPRESSION_VALIDATOR = "^([-+/×]*\\d+(\\.\\d+)?)*"
     }
 
