@@ -126,9 +126,20 @@ class MainActivity : AppCompatActivity() {
             }
 
             squareBtn.setOnClickListener {
-                val inputFieldText =
-                    numberInputField.text?.toString()?.toDouble() ?: return@setOnClickListener
-                result.text = sqrt(inputFieldText).toString()
+                val isTherePreviousResult = calculatorHelper.doesResultExist()
+                if (isTherePreviousResult) {
+                    val calculationResult = calculatorHelper.getTextResult()
+                    numberInputField.setText(calculationResult)
+                    calculatorHelper.setTextInput(calculationResult)
+                    calculatorHelper.resetResult()
+                    result.text = sqrt(calculationResult.toDouble()).toString()
+                } else {
+                    val inputFieldText =
+                        numberInputField.text?.toString()?.toDouble() ?: return@setOnClickListener
+                    val root = sqrt(inputFieldText).toString()
+                    result.text = root
+                    calculatorHelper.setTextResult(root)
+                }
             }
 
             positiveNegativeConverterBtn.setOnClickListener {
