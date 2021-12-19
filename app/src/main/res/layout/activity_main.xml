@@ -20,14 +20,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginEnd="16dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_backspace"
             app:layout_constraintBottom_toBottomOf="@id/number_input_box"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/result"
             app:layout_constraintStart_toEndOf="@id/number_input_box"
             app:layout_constraintTop_toTopOf="@id/number_input_box"
-            app:layout_constraintVertical_bias="0.67" />
+            app:layout_constraintVertical_bias="0.69" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/number_input_box"
@@ -65,7 +64,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/buttonPanel"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.91"
+            app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="123456789101112" />
 

@@ -77,6 +77,14 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            backspaceBtn.setOnLongClickListener {
+                calculatorHelper.resetResult()
+                calculatorHelper.resetTextInput()
+                numberInputField.text?.clear()
+                result.text = ""
+                false
+            }
+
             oneBtn.setOnClickListener { numberInputField.insertChar("1") }
 
             twoBtn.setOnClickListener { numberInputField.insertChar("2") }
@@ -106,15 +114,11 @@ class MainActivity : AppCompatActivity() {
                 result.text = ""
             }
 
-            divideBtn.setOnClickListener { applyOperatorOnEquation("/", numberInputField, result) }
-
             multiplyBtn.setOnClickListener {
-                applyOperatorOnEquation(
-                    "×",
-                    numberInputField,
-                    result
-                )
+                applyOperatorOnEquation("×", numberInputField, result)
             }
+
+            divideBtn.setOnClickListener { applyOperatorOnEquation("/", numberInputField, result) }
 
             minusBtn.setOnClickListener { applyOperatorOnEquation("-", numberInputField, result) }
 
