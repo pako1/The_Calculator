@@ -12,7 +12,6 @@ interface CalculatorHelper {
     fun appendTextInputAtPosition(newChar: String, position: Int)
     fun resetTextInput()
     fun resetResult()
-    fun addOperatorAt(operator: String, position: Int)
     fun doesResultExist(): Boolean
     fun performEquation(): String
     fun containsAlreadyOperatorAtPosition(position: Int): Boolean
@@ -56,20 +55,10 @@ class Calculator : CalculatorHelper {
         textResult = ""
     }
 
-    override fun addOperatorAt(operator: String, position: Int) {
-        if (doesResultExist()) {
-            textInput = textResult
-            textInput set operator
-            resetResult()
-        } else {
-            textInput set operator
-        }
-    }
-
     override fun doesResultExist(): Boolean = textResult.isNotEmpty()
 
     override fun performEquation(): String {
-        return if (checkIfEquationIsCorrect(textInput)) {
+        return if (isEquationCorrect(textInput)) {
             when (findOperationOut()) {
                 Operation.PLUS -> {
                     if (denotesPlusOrMinusSign(textInput, Operation.PLUS.operationSymbol)) {
@@ -174,9 +163,9 @@ class Calculator : CalculatorHelper {
         return containsAlreadyOperator
     }
 
-    private fun checkIfEquationIsCorrect(equation: String): Boolean {
-        return MATHEMATICAL_EXPRESSION_VALIDATOR.toRegex().matches(equation)
-    }
+    private fun isEquationCorrect(equation: String): Boolean =
+        MATHEMATICAL_EXPRESSION_VALIDATOR.toRegex().matches(equation)
+
 
     private fun denotesPlusOrMinusSign(mathematicalOperation: String, operation: String): Boolean {
         var numberOfOperators = 0
@@ -200,10 +189,6 @@ class Calculator : CalculatorHelper {
             textInput.contains("×") -> Operation.MULTIPLICATION
             else -> Operation.INVALID
         }
-    }
-
-    private infix fun String.set(character: String) {
-        textInput += character
     }
 
     companion object {

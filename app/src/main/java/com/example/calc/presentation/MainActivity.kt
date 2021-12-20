@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
 
             zeroBtn.setOnClickListener { numberInputField.insertChar("0") }
 
-            dotBtn.setOnClickListener { numberInputField.insertChar(".") }
+            dotBtn.setOnClickListener { applyDot(numberInputField, result) }
 
             acBtn.setOnClickListener {
                 calculatorHelper.resetResult()
@@ -139,9 +139,9 @@ class MainActivity : AppCompatActivity() {
                     numberInputField.setSelection(numberInputField.selectionEnd)
                 } else {
                     val inputFieldText = numberInputField.text?.toString()
-                    if (!inputFieldText.isNullOrEmpty() && !inputFieldText.contains("%") && calculatorHelper.isApplyingPercentagePossible(
-                            inputFieldText
-                        )
+                    if (!inputFieldText.isNullOrEmpty()
+                        && !inputFieldText.contains("%")
+                        && calculatorHelper.isApplyingPercentagePossible(inputFieldText)
                     ) {
                         val numberInPercentage =
                             calculatorHelper.modifyDisplayedResult(inputFieldText.toPercent())
@@ -199,6 +199,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun applyDot(numberInputField: TextInputEditText, result: TextView) {
+        val isTherePreviousResult = calculatorHelper.doesResultExist()
+        val calculationResult = calculatorHelper.getTextResult()
+        if (isTherePreviousResult) {
+            if (calculationResult[numberInputField.selectionStart - 1] == '.') {
+                return
+            }
+            numberInputField.setText(calculationResult)
+            calculatorHelper.setTextInput(calculationResult)
+            numberInputField.setSelection(calculationResult.length)
+            numberInputField.insertChar(".")
+            calculatorHelper.resetResult()
+            result.text = ""
+        } else {
+            if ((numberInputField.length() >= 0 && numberInputField.selectionStart == 0) || numberInputField.doesContainOperator()) {
+                return
+            } else {
+                if (calculatorHelper.getTextInput()[numberInputField.selectionStart - 1] == '.') {
+                    return
+                }
+                numberInputField.insertChar(".")
+            }
+        }
+    }
+
     private fun applyOperatorOnEquation(
         operator: String,
         numberInputField: TextInputEditText,
@@ -227,7 +252,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun TextInputEditText.insertChar(newChar: String) {
-        val currentCursorPosition = selectionEnd
+        val currentCursorPosition = selectionStart
         calculatorHelper.appendTextInputAtPosition(newChar, currentCursorPosition)
         text?.insert(currentCursorPosition, newChar)
     }
