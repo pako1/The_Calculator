@@ -1,5 +1,6 @@
 package com.example.calc.domain
 
+import com.example.calc.data.Operation
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -9,7 +10,7 @@ interface CalculatorHelper {
     fun setTextResult(result: String)
     fun getTextInput(): String
     fun getTextResult(): String
-    fun appendTextInputAtPosition(newChar: String, position: Int)
+    fun appendTextInputAtPosition(newChar: Char, position: Int)
     fun resetTextInput()
     fun resetResult()
     fun doesResultExist(): Boolean
@@ -18,6 +19,7 @@ interface CalculatorHelper {
     fun modifyDisplayedResult(number: Double): String
     fun isRootingPossible(textInput: String): Boolean
     fun isApplyingPercentagePossible(textInput: String): Boolean
+    fun isPlainNumber(textInput: String): Boolean
 }
 
 class Calculator : CalculatorHelper {
@@ -41,7 +43,7 @@ class Calculator : CalculatorHelper {
         return textResult
     }
 
-    override fun appendTextInputAtPosition(newChar: String, position: Int) {
+    override fun appendTextInputAtPosition(newChar: Char, position: Int) {
         val newEquationBuilder = StringBuilder(textInput)
         newEquationBuilder.insert(position, newChar)
         textInput = newEquationBuilder.toString()
@@ -126,7 +128,7 @@ class Calculator : CalculatorHelper {
 
     private fun getNumbersFromOperation(
         mathematicalOperation: String,
-        operation: String
+        operation: Char
     ): Pair<Double, Double> {
         val firstNumber = mathematicalOperation.substringBefore(operation).toDouble()
         val secondNumber = mathematicalOperation.substringAfter(operation).toDouble()
@@ -152,13 +154,17 @@ class Calculator : CalculatorHelper {
                 || operator == Operation.INVALID
     }
 
+    override fun isPlainNumber(textInput: String): Boolean {
+        return NUMBER_VALIDATOR.toRegex().matches(textInput)
+    }
+
     override fun containsAlreadyOperatorAtPosition(position: Int): Boolean {
         var containsAlreadyOperator = false
         Operation.values().forEach {
             if (containsAlreadyOperator) {
                 return@forEach
             }
-            containsAlreadyOperator = textInput[position - 1].toString() == it.operationSymbol
+            containsAlreadyOperator = textInput[position - 1] == it.operationSymbol
         }
         return containsAlreadyOperator
     }
@@ -167,9 +173,11 @@ class Calculator : CalculatorHelper {
         MATHEMATICAL_EXPRESSION_VALIDATOR.toRegex().matches(equation)
 
 
-    private fun denotesPlusOrMinusSign(mathematicalOperation: String, operation: String): Boolean {
+    private fun denotesPlusOrMinusSign(mathematicalOperation: String, operation: Char): Boolean {
         var numberOfOperators = 0
-        mathematicalOperation.forEach { if (it == '+' || it == '-') numberOfOperators += 1 }
+        mathematicalOperation.forEach {
+            if (it == Operation.PLUS.operationSymbol || it == Operation.MINUS.operationSymbol) numberOfOperators += 1
+        }
         return if (numberOfOperators > 1) {
             false
         } else {
@@ -177,7 +185,7 @@ class Calculator : CalculatorHelper {
         }
     }
 
-    private fun isEquationNotComplete(mathematicalOperation: String, operation: String): Boolean {
+    private fun isEquationNotComplete(mathematicalOperation: String, operation: Char): Boolean {
         return mathematicalOperation.substringAfter(operation).isEmpty()
     }
 
@@ -194,16 +202,7 @@ class Calculator : CalculatorHelper {
     companion object {
         private const val DECIMAL_FORMAT = "#.################"
         private const val MATHEMATICAL_EXPRESSION_VALIDATOR = "^([-+/×]*\\d+(\\.\\d+)?)*"
+        private const val NUMBER_VALIDATOR = "\\d+"
     }
 
-}
-
-enum class Operation(var operationSymbol: String) {
-    PLUS("+"),
-    MINUS("-"),
-    DIVISION("/"),
-    MULTIPLICATION("×"),
-    INVALID(""),
-    INCOMPLETE(""),
-    DONATING_SIGN("")
 }

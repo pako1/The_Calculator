@@ -3,10 +3,10 @@ package com.example.calc.presentation
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.calc.data.Operation
 import com.example.calc.databinding.ActivityMainBinding
 import com.example.calc.domain.Calculator
 import com.example.calc.domain.CalculatorHelper
-import com.example.calc.domain.Operation
 import com.example.calc.domain.toPercent
 import com.google.android.material.textfield.TextInputEditText
 import kotlin.math.sqrt
@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity() {
                             calculatorHelper.setTextInput(remainingText)
                             numberInputField.setText(remainingText)
                             numberInputField.setSelection(0)
-                            result.text = if (remainingText == "%") "" else remainingText
+                            result.text =
+                                if (remainingText == Operation.PERCENTAGE.operationSymbol.toString()) "" else remainingText
                             if (result.text.isNullOrEmpty()) {
                                 calculatorHelper.setTextResult(remainingText)
                             }
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                             val remainingTextSecondPart =
                                 text.substring(cursorPosition, text.length)
                             val finalText = remainingTextFirstPart + remainingTextSecondPart
-                            if (finalText.contains("%") && finalText.length > 1) {
+                            if (finalText.contains(Operation.PERCENTAGE.toString()) && finalText.length > 1) {
                                 result.text = calculatorHelper.modifyDisplayedResult(
                                     finalText.substring(
                                         0,
@@ -85,25 +86,25 @@ class MainActivity : AppCompatActivity() {
                 false
             }
 
-            oneBtn.setOnClickListener { numberInputField.insertChar("1") }
+            oneBtn.setOnClickListener { numberInputField.insertChar('1') }
 
-            twoBtn.setOnClickListener { numberInputField.insertChar("2") }
+            twoBtn.setOnClickListener { numberInputField.insertChar('2') }
 
-            threeBtn.setOnClickListener { numberInputField.insertChar("3") }
+            threeBtn.setOnClickListener { numberInputField.insertChar('3') }
 
-            fourBtn.setOnClickListener { numberInputField.insertChar("4") }
+            fourBtn.setOnClickListener { numberInputField.insertChar('4') }
 
-            fiveBtn.setOnClickListener { numberInputField.insertChar("5") }
+            fiveBtn.setOnClickListener { numberInputField.insertChar('5') }
 
-            sixBtn.setOnClickListener { numberInputField.insertChar("6") }
+            sixBtn.setOnClickListener { numberInputField.insertChar('6') }
 
-            sevenBtn.setOnClickListener { numberInputField.insertChar("7") }
+            sevenBtn.setOnClickListener { numberInputField.insertChar('7') }
 
-            eightBtn.setOnClickListener { numberInputField.insertChar("8") }
+            eightBtn.setOnClickListener { numberInputField.insertChar('8') }
 
-            nineBtn.setOnClickListener { numberInputField.insertChar("9") }
+            nineBtn.setOnClickListener { numberInputField.insertChar('9') }
 
-            zeroBtn.setOnClickListener { numberInputField.insertChar("0") }
+            zeroBtn.setOnClickListener { numberInputField.insertChar('0') }
 
             dotBtn.setOnClickListener { applyDot(numberInputField, result) }
 
@@ -115,14 +116,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             multiplyBtn.setOnClickListener {
-                applyOperatorOnEquation("×", numberInputField, result)
+                applyOperatorOnEquation('×', numberInputField, result)
             }
 
-            divideBtn.setOnClickListener { applyOperatorOnEquation("/", numberInputField, result) }
+            divideBtn.setOnClickListener { applyOperatorOnEquation('/', numberInputField, result) }
 
-            minusBtn.setOnClickListener { applyOperatorOnEquation("-", numberInputField, result) }
+            minusBtn.setOnClickListener { applyOperatorOnEquation('-', numberInputField, result) }
 
-            plusBtn.setOnClickListener { applyOperatorOnEquation("+", numberInputField, result) }
+            plusBtn.setOnClickListener { applyOperatorOnEquation('+', numberInputField, result) }
 
             percentBtn.setOnClickListener {
                 val isTherePreviousResult = calculatorHelper.doesResultExist()
@@ -145,14 +146,27 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         calculatorHelper.setTextInput(inputFieldText)
                         val equationResult = calculatorHelper.performEquation()
-                        if (equationResult == Operation.INVALID.name){
-                            return@setOnClickListener
+
+                        when{
+                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(equationResult) -> return@setOnClickListener
+                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(inputFieldText) ->{
+                                val numberInPercentage =
+                                    calculatorHelper.modifyDisplayedResult(inputFieldText.toPercent())
+                                numberInputField.append("%")
+                                result.text = numberInPercentage
+                                calculatorHelper.setTextResult(numberInPercentage)
+
+                            }
+                            equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(equationResult) -> {
+                                val numberInPercentage =
+                                    calculatorHelper.modifyDisplayedResult(equationResult.toPercent())
+                                numberInputField.append("%")
+                                result.text = numberInPercentage
+                                calculatorHelper.setTextResult(numberInPercentage)
+                            }
                         }
-                        val numberInPercentage =
-                            calculatorHelper.modifyDisplayedResult(equationResult.toPercent())
-                        numberInputField.append("%")
-                        result.text = numberInPercentage
-                        calculatorHelper.setTextResult(numberInPercentage)
+
+
                     }
                 }
             }
@@ -168,18 +182,26 @@ class MainActivity : AppCompatActivity() {
                     numberInputField.setSelection(numberInputField.selectionEnd)
                 } else {
                     val inputFieldText = numberInputField.text?.toString()
-                    if (!inputFieldText.isNullOrEmpty() && calculatorHelper.isRootingPossible(
-                            inputFieldText
-                        ) && calculatorHelper.isRootingPossible(inputFieldText)
+                    if (!inputFieldText.isNullOrEmpty() &&
+                        calculatorHelper.isRootingPossible(inputFieldText) &&
+                        calculatorHelper.isRootingPossible(inputFieldText)
                     ) {
                         calculatorHelper.setTextInput(inputFieldText)
                         val equationResult = calculatorHelper.performEquation()
-                        if (equationResult == Operation.INVALID.name){
-                            return@setOnClickListener
+                        when{
+                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(equationResult) -> return@setOnClickListener
+                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(inputFieldText) ->{
+                                val root = sqrt(inputFieldText.toDouble()).toString()
+                                result.text = root
+                                calculatorHelper.setTextResult(root)
+                            }
+                            equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(equationResult) -> {
+                                val root = sqrt(equationResult.toDouble()).toString()
+                                result.text = root
+                                calculatorHelper.setTextResult(root)
+                            }
                         }
-                        val root = sqrt(equationResult.toDouble()).toString()
-                        result.text = root
-                        calculatorHelper.setTextResult(root)
+
                     }
                 }
             }
@@ -213,29 +235,29 @@ class MainActivity : AppCompatActivity() {
         val isTherePreviousResult = calculatorHelper.doesResultExist()
         val calculationResult = calculatorHelper.getTextResult()
         if (isTherePreviousResult) {
-            if (calculationResult[numberInputField.selectionStart - 1] == '.') {
+            if (calculationResult[numberInputField.selectionStart - 1] == DOT_CHAR) {
                 return
             }
             numberInputField.setText(calculationResult)
             calculatorHelper.setTextInput(calculationResult)
             numberInputField.setSelection(calculationResult.length)
-            numberInputField.insertChar(".")
+            numberInputField.insertChar(DOT_CHAR)
             calculatorHelper.resetResult()
             result.text = ""
         } else {
             if ((numberInputField.length() >= 0 && numberInputField.selectionStart == 0) || numberInputField.doesContainOperator()) {
                 return
             } else {
-                if (calculatorHelper.getTextInput()[numberInputField.selectionStart - 1] == '.') {
+                if (calculatorHelper.getTextInput()[numberInputField.selectionStart - 1] == DOT_CHAR) {
                     return
                 }
-                numberInputField.insertChar(".")
+                numberInputField.insertChar(DOT_CHAR)
             }
         }
     }
 
     private fun applyOperatorOnEquation(
-        operator: String,
+        operator: Char,
         numberInputField: TextInputEditText,
         result: TextView
     ) {
@@ -261,9 +283,13 @@ class MainActivity : AppCompatActivity() {
         return calculatorHelper.containsAlreadyOperatorAtPosition(selectionStart)
     }
 
-    private fun TextInputEditText.insertChar(newChar: String) {
+    private fun TextInputEditText.insertChar(newChar: Char) {
         val currentCursorPosition = selectionStart
         calculatorHelper.appendTextInputAtPosition(newChar, currentCursorPosition)
-        text?.insert(currentCursorPosition, newChar)
+        text?.insert(currentCursorPosition, newChar.toString())
+    }
+
+    companion object {
+        private const val DOT_CHAR = '.'
     }
 }
