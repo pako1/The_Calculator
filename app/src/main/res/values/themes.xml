@@ -1,26 +1,15 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.The_Calculator" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/tr</item>
-        <item name="colorPrimaryVariant">#b4cbd6</item>
-        <item name="colorPrimaryDark">#576c76</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">#4c5f65</item>
-        <item name="colorSecondaryVariant">#788c93</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <item name="android:colorControlActivated">@color/black</item>
-
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">@color/colorSecondaryDark</item>
+        <item name="background">@color/calculationsBackground</item>
+        <item name="colorSurface">@color/colorCardBackground</item>
     </style>
 
     <style name="Theme.SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_background</item>
-        <item name="android:statusBarColor">#4a7079</item>
+        <item name="android:statusBarColor">@color/colorSecondaryDark</item>
     </style>
 
     <!--Change the component's shape by overriding the style of the component-->
@@ -35,13 +24,13 @@
     <!--All buttons style-->
     <style name="calculator_button_style" parent="">
         <item name="android:textSize">16sp</item>
-        <item name="backgroundTint">@color/tr</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
         <item name="textAllCaps">false</item>
         <item name="android:insetLeft">0dp</item>
         <item name="android:insetRight">0dp</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textColor">@color/textColor</item>
         <item name="cornerRadius">40dp</item>
     </style>
 

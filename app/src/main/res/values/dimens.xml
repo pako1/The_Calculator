@@ -6,8 +6,15 @@
 
     <!--Calculator Margins-->
     <dimen name="margin_24dp">24dp</dimen>
-    <dimen name="margin_16dp">8dp</dimen>
-    <dimen name="margin_12dp">8dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="margin_12dp">12dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+
+    <!--Calculator Paddings-->
+    <dimen name="padding_24dp">24dp</dimen>
+    <dimen name="padding_16dp">16dp</dimen>
+    <dimen name="padding_12dp">12dp</dimen>
+    <dimen name="padding_8dp">8dp</dimen>
 
     <!--Calculator text Sizes-->
     <dimen name="text_size_30sp">36sp</dimen>

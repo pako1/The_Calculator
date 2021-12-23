@@ -1,7 +1,7 @@
 <resources>
     <!--Calculator's buttons texts-->
     <string name="app_name">Calculator</string>
-    <string name="clear_button_text">C</string>
+    <string name="clear_button_text">AC</string>
     <string name="percent_button_text">%</string>
     <string name="square_root_button_text">&#8730;</string>
     <string name="divide_button_text">/</string>
