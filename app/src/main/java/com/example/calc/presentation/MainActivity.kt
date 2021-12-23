@@ -3,6 +3,7 @@ package com.example.calc.presentation
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.calc.R
 import com.example.calc.data.Operation
 import com.example.calc.databinding.ActivityMainBinding
 import com.example.calc.domain.Calculator
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var calculatorHelper: CalculatorHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_The_Calculator)
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
@@ -147,9 +149,13 @@ class MainActivity : AppCompatActivity() {
                         calculatorHelper.setTextInput(inputFieldText)
                         val equationResult = calculatorHelper.performEquation()
 
-                        when{
-                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(equationResult) -> return@setOnClickListener
-                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(inputFieldText) ->{
+                        when {
+                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
+                                equationResult
+                            ) -> return@setOnClickListener
+                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
+                                inputFieldText
+                            ) -> {
                                 val numberInPercentage =
                                     calculatorHelper.modifyDisplayedResult(inputFieldText.toPercent())
                                 numberInputField.append("%")
@@ -157,7 +163,9 @@ class MainActivity : AppCompatActivity() {
                                 calculatorHelper.setTextResult(numberInPercentage)
 
                             }
-                            equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(equationResult) -> {
+                            equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(
+                                equationResult
+                            ) -> {
                                 val numberInPercentage =
                                     calculatorHelper.modifyDisplayedResult(equationResult.toPercent())
                                 numberInputField.append("%")
@@ -188,14 +196,20 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         calculatorHelper.setTextInput(inputFieldText)
                         val equationResult = calculatorHelper.performEquation()
-                        when{
-                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(equationResult) -> return@setOnClickListener
-                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(inputFieldText) ->{
+                        when {
+                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
+                                equationResult
+                            ) -> return@setOnClickListener
+                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
+                                inputFieldText
+                            ) -> {
                                 val root = sqrt(inputFieldText.toDouble()).toString()
                                 result.text = root
                                 calculatorHelper.setTextResult(root)
                             }
-                            equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(equationResult) -> {
+                            equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(
+                                equationResult
+                            ) -> {
                                 val root = sqrt(equationResult.toDouble()).toString()
                                 result.text = root
                                 calculatorHelper.setTextResult(root)
