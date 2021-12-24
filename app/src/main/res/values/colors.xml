@@ -13,5 +13,6 @@
     <color name="textColorDark">#d0d0d0</color>
     <color name="colorBackSpaceButton">@color/textColor</color>
     <color name="textInputLayoutColor">@color/textColor</color>
+    <color name="resultTextColor">@color/textColor</color>
 
 </resources>

@@ -2,4 +2,5 @@
 <resources>
     <color name="colorBackSpaceButton">@color/textColorDark</color>
     <color name="textInputLayoutColor">@color/textColorDark</color>
+    <color name="resultTextColor">@color/textColorDark</color>
 </resources>

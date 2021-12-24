@@ -6,23 +6,27 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.calc.R
 import com.example.calc.data.Operation
 import com.example.calc.databinding.ActivityMainBinding
-import com.example.calc.domain.Calculator
 import com.example.calc.domain.CalculatorHelper
 import com.example.calc.domain.toPercent
 import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.math.sqrt
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    //By using inject here hilt will provide us a calculatorHelper instance by using the CalculatorModule to find out how..
+    @Inject
+    lateinit var calculatorHelper: CalculatorHelper
+
     private lateinit var mainBinding: ActivityMainBinding
-    private lateinit var calculatorHelper: CalculatorHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_The_Calculator)
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
-        calculatorHelper = Calculator()
         initializeButtons()
     }
 

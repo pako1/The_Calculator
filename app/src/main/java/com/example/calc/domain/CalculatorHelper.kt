@@ -4,6 +4,7 @@ import com.example.calc.data.Operation
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import javax.inject.Inject
 
 interface CalculatorHelper {
     fun setTextInput(input: String)
@@ -21,8 +22,8 @@ interface CalculatorHelper {
     fun isApplyingPercentagePossible(textInput: String): Boolean
     fun isPlainNumber(textInput: String): Boolean
 }
-
-class Calculator : CalculatorHelper {
+//By using the @inject constructor we tell hilt how he can provide us an Calculator instance
+class Calculator @Inject constructor() : CalculatorHelper {
 
     private var textInput: String = ""
     private var textResult: String = ""

@@ -55,7 +55,7 @@
             android:layout_marginBottom="@dimen/margin_12dp"
             android:gravity="end"
             android:maxLength="15"
-            android:textColor="@color/textColor"
+            android:textColor="@color/resultTextColor"
             android:textSize="@dimen/text_size_30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/buttonPanel"

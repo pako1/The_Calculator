@@ -10,6 +10,7 @@
 - Square Root
 - Percentage
 - History of previous calculations
+- Night & Day mode
 
 
 ## Application Development
