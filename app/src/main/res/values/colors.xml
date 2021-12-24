@@ -11,4 +11,7 @@
     <color name="calculationsBackground">#e1e2e1</color>
     <color name="textColor">#223033</color>
     <color name="textColorDark">#d0d0d0</color>
+    <color name="colorBackSpaceButton">@color/textColor</color>
+    <color name="textInputLayoutColor">@color/textColor</color>
+
 </resources>

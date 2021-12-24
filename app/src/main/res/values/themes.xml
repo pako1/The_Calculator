@@ -5,6 +5,8 @@
         <item name="android:statusBarColor">@color/colorSecondaryDark</item>
         <item name="background">@color/calculationsBackground</item>
         <item name="colorSurface">@color/colorCardBackground</item>
+        <item name="android:colorControlActivated">@color/textColor</item>
+
     </style>
 
     <style name="Theme.SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">

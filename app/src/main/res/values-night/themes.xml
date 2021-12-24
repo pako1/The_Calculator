@@ -4,8 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:statusBarColor">@color/colorSecondaryDark</item>
-        <item name="background">@color/black</item>
-
+        <item name="android:colorControlActivated">@color/textColorDark</item>
     </style>
 
     <!--Change the component's shape by overriding the style of the component-->

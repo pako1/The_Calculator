@@ -15,17 +15,20 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:contentDescription="@null"
+            app:layout_constraintVertical_bias="0.7"
             android:src="@drawable/ic_backspace"
             app:layout_constraintBottom_toBottomOf="@id/number_input_box"
             app:layout_constraintEnd_toEndOf="@id/result"
             app:layout_constraintStart_toEndOf="@id/number_input_box"
             app:layout_constraintTop_toTopOf="@id/number_input_box"
-            app:layout_constraintVertical_bias="0.69" />
+            app:tint="@color/colorBackSpaceButton" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/number_input_box"
             android:layout_width="0dp"
+            app:hintEnabled="false"
             android:layout_height="wrap_content"
+            app:boxBackgroundMode="none"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintBottom_toTopOf="@id/result"
@@ -39,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="end"
-                android:textColor="@color/textColor"
+                android:textColor="@color/textInputLayoutColor"
                 android:textSize="@dimen/text_size_26sp"
                 tools:text="24" />
         </com.google.android.material.textfield.TextInputLayout>
