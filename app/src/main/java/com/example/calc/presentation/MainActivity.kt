@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                             numberInputField.setText(remainingText)
                             numberInputField.setSelection(0)
                             result.text =
-                                if (remainingText == Operation.PERCENTAGE.operationSymbol.toString()) "" else remainingText
+                                if (remainingText == Operation.PERCENTAGE.operatorSymbol.toString()) "" else remainingText
                             if (result.text.isNullOrEmpty()) {
                                 calculatorHelper.setTextResult(remainingText)
                             }
@@ -122,14 +122,36 @@ class MainActivity : AppCompatActivity() {
             }
 
             multiplyBtn.setOnClickListener {
-                applyOperatorOnEquation('×', numberInputField, result)
+                applyOperatorOnEquation(
+                    Operation.MULTIPLICATION.operatorSymbol,
+                    numberInputField,
+                    result
+                )
             }
 
-            divideBtn.setOnClickListener { applyOperatorOnEquation('/', numberInputField, result) }
+            divideBtn.setOnClickListener {
+                applyOperatorOnEquation(
+                    Operation.DIVISION.operatorSymbol,
+                    numberInputField,
+                    result
+                )
+            }
 
-            minusBtn.setOnClickListener { applyOperatorOnEquation('-', numberInputField, result) }
+            minusBtn.setOnClickListener {
+                applyOperatorOnEquation(
+                    Operation.SUBTRACTION.operatorSymbol,
+                    numberInputField,
+                    result
+                )
+            }
 
-            plusBtn.setOnClickListener { applyOperatorOnEquation('+', numberInputField, result) }
+            plusBtn.setOnClickListener {
+                applyOperatorOnEquation(
+                    Operation.ADDITION.operatorSymbol,
+                    numberInputField,
+                    result
+                )
+            }
 
             percentBtn.setOnClickListener {
                 val isTherePreviousResult = calculatorHelper.doesResultExist()
@@ -145,8 +167,8 @@ class MainActivity : AppCompatActivity() {
                     calculatorHelper.setTextResult(percentageResult)
                     numberInputField.setSelection(numberInputField.selectionEnd)
                 } else {
-                    val inputFieldText = numberInputField.text?.toString()
-                    if (!inputFieldText.isNullOrEmpty()
+                    val inputFieldText = numberInputField.text.toString()
+                    if (inputFieldText.isNotEmpty()
                         && !inputFieldText.contains("%")
                         && calculatorHelper.isApplyingPercentagePossible(inputFieldText)
                     ) {
@@ -154,6 +176,13 @@ class MainActivity : AppCompatActivity() {
                         val equationResult = calculatorHelper.performEquation()
 
                         when {
+                            equationResult == Operation.SIGNED_NUMBER_REPRESENTATION.name ->{
+                                val numberInPercentage =
+                                    calculatorHelper.modifyDisplayedResult(calculatorHelper.getTextInput().toPercent())
+                                numberInputField.append("%")
+                                result.text = numberInPercentage
+                                calculatorHelper.setTextResult(numberInPercentage)
+                            }
                             equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
                                 equationResult
                             ) -> return@setOnClickListener
@@ -165,7 +194,6 @@ class MainActivity : AppCompatActivity() {
                                 numberInputField.append("%")
                                 result.text = numberInPercentage
                                 calculatorHelper.setTextResult(numberInPercentage)
-
                             }
                             equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(
                                 equationResult
@@ -177,8 +205,6 @@ class MainActivity : AppCompatActivity() {
                                 calculatorHelper.setTextResult(numberInPercentage)
                             }
                         }
-
-
                     }
                 }
             }
@@ -193,52 +219,59 @@ class MainActivity : AppCompatActivity() {
                     result.text = sqrt(calculationResult.toDouble()).toString()
                     numberInputField.setSelection(numberInputField.selectionEnd)
                 } else {
-                    val inputFieldText = numberInputField.text?.toString()
-                    if (!inputFieldText.isNullOrEmpty() &&
-                        calculatorHelper.isRootingPossible(inputFieldText) &&
-                        calculatorHelper.isRootingPossible(inputFieldText)
-                    ) {
+                    val inputFieldText = numberInputField.text.toString()
+                    if (inputFieldText.isNotEmpty()) {
                         calculatorHelper.setTextInput(inputFieldText)
-                        val equationResult = calculatorHelper.performEquation()
-                        when {
-                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
-                                equationResult
-                            ) -> return@setOnClickListener
-                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
-                                inputFieldText
-                            ) -> {
-                                val root = sqrt(inputFieldText.toDouble()).toString()
-                                result.text = root
-                                calculatorHelper.setTextResult(root)
-                            }
-                            equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(
-                                equationResult
-                            ) -> {
-                                val root = sqrt(equationResult.toDouble()).toString()
-                                result.text = root
-                                calculatorHelper.setTextResult(root)
+                        if (calculatorHelper.isRootingPossible()) {
+                            val equationResult = calculatorHelper.performEquation()
+                            when {
+                                calculatorHelper.isNegative(equationResult) -> return@setOnClickListener
+                                equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
+                                    equationResult
+                                ) -> return@setOnClickListener
+                                equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
+                                    inputFieldText
+                                ) -> {
+                                    val root = sqrt(inputFieldText.toDouble()).toString()
+                                    result.text = root
+                                    calculatorHelper.setTextResult(root)
+                                }
+                                equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(
+                                    equationResult
+                                ) -> {
+                                    val root = sqrt(equationResult.toDouble()).toString()
+                                    result.text = root
+                                    calculatorHelper.setTextResult(root)
+                                }
                             }
                         }
-
                     }
                 }
             }
 
             positiveNegativeConverterBtn.setOnClickListener {
-                numberInputField.text?.toString()?.toInt()?.let {
-                    if (it > 0) {
-                        //todo add - from front
-                        return@let
-                    } else {
-                        return@let
-                        //todo remove - from front
-                    }
+                val currentInput = calculatorHelper.getTextInput()
+                if (currentInput.isEmpty()) {
+                    return@setOnClickListener
+                }
+                val isPlainNumber = calculatorHelper.isPlainNumber(currentInput)
+                if (isPlainNumber) {
+                    val reversedNumber = calculatorHelper.reverseNumber()
+                    calculatorHelper.setTextInput(reversedNumber)
+                    numberInputField.setText(reversedNumber)
+                    numberInputField.setSelection(reversedNumber.length)
+                } else {
+                    val cursorPosition = numberInputField.selectionStart
+                    val equation = calculatorHelper.addParenthesis(cursorPosition)
+                    calculatorHelper.setTextInput(equation)
+                    numberInputField.setText(equation)
+                    numberInputField.setSelection(equation.length)
                 }
             }
 
             equalsBtn.setOnClickListener {
                 when (val operationResult = calculatorHelper.performEquation()) {
-                    Operation.INVALID.name, Operation.INCOMPLETE.name, Operation.DONATING_SIGN.name -> {
+                    Operation.INVALID.name, Operation.INCOMPLETE.name, Operation.SIGNED_NUMBER_REPRESENTATION.name -> {
                         return@setOnClickListener
                     }
                     else -> {

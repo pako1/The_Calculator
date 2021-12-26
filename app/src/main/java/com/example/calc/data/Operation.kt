@@ -1,12 +1,12 @@
 package com.example.calc.data
 
-enum class Operation(var operationSymbol: Char) {
-    PLUS('+'),
-    MINUS('-'),
+enum class Operation(var operatorSymbol: Char) {
+    ADDITION('+'),
+    SUBTRACTION('-'),
     DIVISION('/'),
     MULTIPLICATION('×'),
     PERCENTAGE('%'),
     INVALID(' '),
     INCOMPLETE(' '),
-    DONATING_SIGN(' ')
+    SIGNED_NUMBER_REPRESENTATION(' ')
 }
