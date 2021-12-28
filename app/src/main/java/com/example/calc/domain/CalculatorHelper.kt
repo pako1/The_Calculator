@@ -168,10 +168,8 @@ class Calculator @Inject constructor() : CalculatorHelper {
     override fun isRootingPossible(): Boolean {
         val operator = findOperationOut()
         return (operator != Operation.INVALID
-                && !isEquationNotComplete(textInput, operator.operatorSymbol) && !isNegative(
-            textInput
-        ))
-                || operator == Operation.INVALID
+                && !isEquationNotComplete(textInput, operator.operatorSymbol)
+                && !isNegative(textInput)) || operator == Operation.INVALID
     }
 
     override fun isApplyingPercentagePossible(textInput: String): Boolean {
@@ -258,7 +256,11 @@ class Calculator @Inject constructor() : CalculatorHelper {
     }
 
     override fun isNegative(textInput: String): Boolean {
-        return textInput.toDouble() < 0.0
+        return try {
+            textInput.toDouble() < 0.0
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private fun findOperationOut(): Operation {

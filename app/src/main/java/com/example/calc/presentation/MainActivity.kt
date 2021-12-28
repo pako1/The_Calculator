@@ -176,9 +176,11 @@ class MainActivity : AppCompatActivity() {
                         val equationResult = calculatorHelper.performEquation()
 
                         when {
-                            equationResult == Operation.SIGNED_NUMBER_REPRESENTATION.name ->{
+                            equationResult == Operation.SIGNED_NUMBER_REPRESENTATION.name -> {
                                 val numberInPercentage =
-                                    calculatorHelper.modifyDisplayedResult(calculatorHelper.getTextInput().toPercent())
+                                    calculatorHelper.modifyDisplayedResult(
+                                        calculatorHelper.getTextInput().toPercent()
+                                    )
                                 numberInputField.append("%")
                                 result.text = numberInPercentage
                                 calculatorHelper.setTextResult(numberInPercentage)
@@ -209,7 +211,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            squareBtn.setOnClickListener {
+            rootBtn.setOnClickListener {
                 val isTherePreviousResult = calculatorHelper.doesResultExist()
                 if (isTherePreviousResult) {
                     val calculationResult = calculatorHelper.getTextResult()
@@ -225,7 +227,6 @@ class MainActivity : AppCompatActivity() {
                         if (calculatorHelper.isRootingPossible()) {
                             val equationResult = calculatorHelper.performEquation()
                             when {
-                                calculatorHelper.isNegative(equationResult) -> return@setOnClickListener
                                 equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
                                     equationResult
                                 ) -> return@setOnClickListener
@@ -243,6 +244,7 @@ class MainActivity : AppCompatActivity() {
                                     result.text = root
                                     calculatorHelper.setTextResult(root)
                                 }
+                                calculatorHelper.isNegative(equationResult) -> return@setOnClickListener
                             }
                         }
                     }
