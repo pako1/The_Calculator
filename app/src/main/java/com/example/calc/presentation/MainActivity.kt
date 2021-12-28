@@ -264,6 +264,9 @@ class MainActivity : AppCompatActivity() {
                     numberInputField.setSelection(reversedNumber.length)
                 } else {
                     val cursorPosition = numberInputField.selectionStart
+                    if (cursorPosition == calculatorHelper.getTextInput().length && calculatorHelper.hasOperatorAtEnd()) {
+                        return@setOnClickListener
+                    }
                     val equation = calculatorHelper.addParenthesis(cursorPosition)
                     calculatorHelper.setTextInput(equation)
                     numberInputField.setText(equation)

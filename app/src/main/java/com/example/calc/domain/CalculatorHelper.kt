@@ -25,6 +25,7 @@ interface CalculatorHelper {
     fun addParenthesis(cursorPosition: Int): String
     fun isNegative(textInput: String): Boolean
     fun isEquationCorrect(equation: String): Boolean
+    fun hasOperatorAtEnd(): Boolean
 }
 
 //By using the @inject constructor we tell hilt how he can provide us an Calculator instance
@@ -128,35 +129,52 @@ class Calculator @Inject constructor() : CalculatorHelper {
 
     private fun getNumbersFromOperation(
         equation: String,
-        operation: Char
+        operator: Char
     ): Pair<Double, Double> {
-        return if (equation[0] == operation) {
-            val firstNumber = equation
-                .substring(1, equation.length)
-                .substringBefore(operation)
-                .removeParenthesisIfAvailable()
-                .addCharAtIndex(equation[0], 0)
-                .toDouble()
-            val secondNumber = equation
-                .substring(1, equation.length)
-                .substringAfter(operation)
-                .removeParenthesisIfAvailable()
-                .addCharAtIndex(equation[0], 0)
-                .toDouble()
+        return when {
+            equation[0] == operator -> {
+                val firstNumber = equation
+                    .substring(1, equation.length)
+                    .substringBefore(operator)
+                    .removeParenthesisIfAvailable()
+                    .addCharAtIndex(equation[0], 0)
+                    .toDouble()
+                val secondNumber = equation
+                    .substring(1, equation.length)
+                    .substringAfter(operator)
+                    .removeParenthesisIfAvailable()
+                    .addCharAtIndex(equation[0], 0)
+                    .toDouble()
 
-            firstNumber to secondNumber
-        } else {
-            val firstNumber = equation
-                .substringBefore(operation)
-                .removeParenthesisIfAvailable()
-                .toDouble()
-            val secondNumber = equation
-                .substringAfter(operation)
-                .removeParenthesisIfAvailable()
-                .toDouble()
+                firstNumber to secondNumber
+            }
+            equation[0].toString() == OPENING_PARENTHESIS -> {
+                val firstNumber = equation
+                    .substringBefore(operator)
+                    .removeParenthesisIfAvailable()
+                    .apply { substring(1, this.length) }
+                    .toDouble()
+                val secondNumber = equation
+                    .substringAfter(operator)
+                    .removeParenthesisIfAvailable()
+                    .apply { substring(1, this.length) }
+                    .toDouble()
 
-            firstNumber to secondNumber
+                firstNumber to secondNumber
+            }
+            else -> {
+                val firstNumber = equation
+                    .substringBefore(operator)
+                    .removeParenthesisIfAvailable()
+                    .toDouble()
+                val secondNumber = equation
+                    .substringAfter(operator)
+                    .removeParenthesisIfAvailable()
+                    .toDouble()
 
+                firstNumber to secondNumber
+
+            }
         }
     }
 
@@ -186,9 +204,17 @@ class Calculator @Inject constructor() : CalculatorHelper {
         return reversalPattern(textInput)
     }
 
+    override fun hasOperatorAtEnd(): Boolean {
+        var containsOperatorAtEnd = false
+        Operation.values()
+            .forEach { if (it.operatorSymbol == textInput.last()) containsOperatorAtEnd = true }
+        return containsOperatorAtEnd
+    }
+
     override fun addParenthesis(cursorPosition: Int): String {
         val operator = findOperationOut()
         val operatorPosition = textInput.indexOf(operator.operatorSymbol)
+
         val numberAfterOperator = textInput.substringAfter(textInput[operatorPosition])
         val numberBeforeOperator = textInput.substringBefore(textInput[operatorPosition])
         return if (cursorPosition > operatorPosition) {
@@ -284,7 +310,8 @@ class Calculator @Inject constructor() : CalculatorHelper {
 
     companion object {
         private const val DECIMAL_FORMAT = "#.################"
-        private const val MATHEMATICAL_EXPRESSION_VALIDATOR = "^([-+/×]*\\d+(\\.\\d+)?)*"
+        private const val MATHEMATICAL_EXPRESSION_VALIDATOR =
+            "^(([(])?[-+/×]*\\d+(\\.\\d+)?([)]?))*([-+/×])(([(])?[-+/×]*\\d+(\\.\\d+)?([)]?))*\$"
         private const val NUMBER_VALIDATOR = "\\d+"
         private const val REVERSE_ATTRIBUTE = -1
         private const val OPENING_PARENTHESIS = "("
