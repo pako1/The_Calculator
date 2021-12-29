@@ -2,7 +2,7 @@ package com.example.lib.main
 
 import com.example.lib.models.*
 
-class Evaluator(private val root: ExpressionSyntax) {
+ class Evaluator(val root: ExpressionSyntax) {
 
     fun evaluate(): Int {
         return evaluateExpression(root)

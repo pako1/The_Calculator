@@ -1,6 +1,6 @@
 package com.example.lib.models
 
-class BinaryExpressionSyntax(
+internal class BinaryExpressionSyntax(
     val left: ExpressionSyntax,
     val operatorToken: SyntaxToken,
     val right: ExpressionSyntax

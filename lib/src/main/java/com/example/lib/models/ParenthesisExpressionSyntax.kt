@@ -1,6 +1,6 @@
 package com.example.lib.models
 
-data class ParenthesisExpressionSyntax(
+internal data class ParenthesisExpressionSyntax(
     var openParenthesisToken: SyntaxToken,
     var expressionSyntax: ExpressionSyntax,
     var closeParenthesisExpressionSyntax: SyntaxToken

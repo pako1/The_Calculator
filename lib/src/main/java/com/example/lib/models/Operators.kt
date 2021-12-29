@@ -1,6 +1,6 @@
 package com.example.lib.models
 
-enum class Operators(val operatorSymbol: String) {
+internal enum class Operators(val operatorSymbol: String) {
     ADDITION("+"),
     SUBTRACTION("-"),
     DIVISION("/"),
