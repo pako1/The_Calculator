@@ -4,7 +4,7 @@ import com.example.lib.models.Operators
 import com.example.lib.models.SyntaxKind
 import com.example.lib.models.SyntaxToken
 
-class Lexer {
+internal class Lexer {
 
     private var position: Int = 0
     private var readOnly: String = ""

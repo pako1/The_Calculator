@@ -12,5 +12,6 @@ enum class SyntaxKind {
     EOFToken,
     NumberExpression,
     BinaryExpression,
-    ParenthesizedExpression
+    ParenthesizedExpression,
+    UnaryExpression
 }

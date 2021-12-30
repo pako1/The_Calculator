@@ -2,7 +2,7 @@ package com.example.lib.main
 
 import com.example.lib.models.*
 
-class Parser {
+internal class Parser {
 
     private var text = ""
     private var syntaxTokens = mutableListOf<SyntaxToken>()
@@ -35,9 +35,7 @@ class Parser {
 
     }
 
-    private fun provideCurrentToken() = peek(0)
-
-    private fun peek(offset: Int): SyntaxToken {
+    private fun provideCurrentToken(offset: Int = 0): SyntaxToken {
         val index = position + offset
         return if (index >= syntaxTokens.size) {
             syntaxTokens.last()
@@ -52,22 +50,13 @@ class Parser {
         return currentToken
     }
 
-    private fun match(syntaxKind: SyntaxKind): SyntaxToken {
-        return if (provideCurrentToken().syntaxKind == syntaxKind) {
-            nextToken()
-        } else {
-            diagnostics.add("ERROR: unexpected token <{${provideCurrentToken().syntaxKind}}>,expected <{${syntaxKind}}>")
-            SyntaxToken(syntaxKind, provideCurrentToken().position, null, null)
-        }
-    }
-
     fun parse(): SyntaxTree {
-        val expression = parseTerm()
-        val eofToken = match(SyntaxKind.EOFToken)
+        val expression = parseExpression()
+        val eofToken = matchToken(SyntaxKind.EOFToken)
         return SyntaxTree(diagnostics = diagnostics, root = expression, EOFToken = eofToken)
     }
 
-    private fun parseTerm(): ExpressionSyntax {
+    private fun parseExpression(): ExpressionSyntax {
         var left = parseFactor()
         while (provideCurrentToken().syntaxKind == SyntaxKind.PlusToken
             || provideCurrentToken().syntaxKind == SyntaxKind.MinusToken
@@ -91,16 +80,32 @@ class Parser {
         return left
     }
 
-
     private fun parsePrimaryExpression(): ExpressionSyntax {
         if (provideCurrentToken().syntaxKind == SyntaxKind.OpenParenthesisToken) {
             val left = nextToken()
-            val expression = parseTerm()
-            val right = match(SyntaxKind.CloseParenthesisToken)
+            val expression = parseExpression()
+            val right = matchToken(SyntaxKind.CloseParenthesisToken)
             return ParenthesisExpressionSyntax(left, expression, right)
         }
-        val numberToken = match(SyntaxKind.NumberToken)
-        return NumberExpressionSyntax(numberToken)
+        return if (provideCurrentToken().syntaxKind == SyntaxKind.PlusToken ||
+            provideCurrentToken().syntaxKind == SyntaxKind.MinusToken
+        ) {
+            val operator = nextToken()
+            val right = matchToken(SyntaxKind.NumberToken)
+            UnaryExpressionSyntax(operator, NumberExpressionSyntax(right))
+        } else {
+            val numberToken = matchToken(SyntaxKind.NumberToken)
+            NumberExpressionSyntax(numberToken)
+        }
+
     }
 
+    private fun matchToken(syntaxKind: SyntaxKind): SyntaxToken {
+        return if (provideCurrentToken().syntaxKind == syntaxKind) {
+            nextToken()
+        } else {
+            diagnostics.add("ERROR: unexpected token <{${provideCurrentToken().syntaxKind}}>,expected <{${syntaxKind}}>")
+            SyntaxToken(syntaxKind, provideCurrentToken().position, null, null)
+        }
+    }
 }
