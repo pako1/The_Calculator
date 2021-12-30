@@ -2,6 +2,7 @@ package com.example.lib.models
 
 enum class SyntaxKind {
     NumberToken,
+    DotToken,
     PlusToken,
     MinusToken,
     StarToken,
@@ -11,6 +12,7 @@ enum class SyntaxKind {
     UnrecognizedToken,
     EOFToken,
     NumberExpression,
+    DecimalExpression,
     BinaryExpression,
     ParenthesizedExpression,
     UnaryExpression

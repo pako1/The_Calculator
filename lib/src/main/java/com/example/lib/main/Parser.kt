@@ -1,8 +1,11 @@
 package com.example.lib.main
 
-import com.example.lib.models.*
+import com.example.lib.models.SyntaxKind
+import com.example.lib.models.SyntaxToken
+import com.example.lib.models.SyntaxTree
+import com.example.lib.models.expressions.*
 
-internal class Parser {
+class Parser {
 
     private var text = ""
     private var syntaxTokens = mutableListOf<SyntaxToken>()
@@ -87,6 +90,8 @@ internal class Parser {
             val right = matchToken(SyntaxKind.CloseParenthesisToken)
             return ParenthesisExpressionSyntax(left, expression, right)
         }
+
+
         return if (provideCurrentToken().syntaxKind == SyntaxKind.PlusToken ||
             provideCurrentToken().syntaxKind == SyntaxKind.MinusToken
         ) {

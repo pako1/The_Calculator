@@ -1,6 +1,8 @@
 package com.example.calc.domain
 
 import com.example.calc.data.Operation
+import com.example.lib.main.Evaluator
+import com.example.lib.main.Parser
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -67,116 +69,22 @@ class Calculator @Inject constructor() : CalculatorHelper {
     override fun doesResultExist(): Boolean = textResult.isNotEmpty()
 
     override fun performEquation(): String {
-        return if (isEquationCorrect(textInput)) {
-            when (findOperationOut()) {
-                Operation.ADDITION -> {
-                    if (denotesPlusOrMinusSign(textInput, Operation.ADDITION.operatorSymbol)) {
-                        return Operation.SIGNED_NUMBER_REPRESENTATION.name
-                    }
-                    if (isEquationNotComplete(textInput, Operation.ADDITION.operatorSymbol)) {
-                        return Operation.INCOMPLETE.name
-                    }
-                    val (firstNumber, secondNumber) = getNumbersFromOperation(
-                        textInput,
-                        Operation.ADDITION.operatorSymbol
-                    )
-                    textResult = modifyDisplayedResult(firstNumber + secondNumber)
-                    return textResult
-                }
-                Operation.SUBTRACTION -> {
-                    if (denotesPlusOrMinusSign(textInput, Operation.SUBTRACTION.operatorSymbol)) {
-                        return Operation.SIGNED_NUMBER_REPRESENTATION.name
-                    }
-                    if (isEquationNotComplete(textInput, Operation.SUBTRACTION.operatorSymbol)) {
-                        return Operation.INCOMPLETE.name
-                    }
-                    val (firstNumber, secondNumber) = getNumbersFromOperation(
-                        textInput,
-                        Operation.SUBTRACTION.operatorSymbol
-                    )
-                    textResult = modifyDisplayedResult(firstNumber - secondNumber)
-                    return textResult
-                }
-                Operation.DIVISION -> {
-                    if (isEquationNotComplete(textInput, Operation.ADDITION.operatorSymbol)) {
-                        return Operation.INCOMPLETE.name
-                    }
-                    val (firstNumber, secondNumber) = getNumbersFromOperation(
-                        textInput,
-                        Operation.DIVISION.operatorSymbol
-                    )
 
-                    textResult = modifyDisplayedResult(firstNumber / secondNumber)
-                    return textResult
-                }
-                Operation.MULTIPLICATION -> {
-                    if (isEquationNotComplete(textInput, Operation.ADDITION.operatorSymbol)) {
-                        return Operation.INCOMPLETE.name
-                    }
-                    val (firstNumber, secondNumber) = getNumbersFromOperation(
-                        textInput,
-                        Operation.MULTIPLICATION.operatorSymbol
-                    )
-                    textResult = modifyDisplayedResult(firstNumber * secondNumber)
-                    return textResult
-                }
-                else -> Operation.INVALID.name
+        val parser = Parser()
+        parser.setTextInput(textInput)
+        parser.startProcess()
+        val syntaxTree = parser.parse()
+        if (syntaxTree.diagnostics.any()) {
+            syntaxTree.diagnostics.forEach {
+                println(it)
             }
-        } else {
-            Operation.INVALID.name
+            return Operation.INVALID.name
         }
+        val evaluator = Evaluator(syntaxTree.root)
+        val result = evaluator.evaluate()
+        return result?.toString() ?: Operation.INVALID.name
     }
 
-    private fun getNumbersFromOperation(
-        equation: String,
-        operator: Char
-    ): Pair<Double, Double> {
-        return when {
-            equation[0] == operator -> {
-                val firstNumber = equation
-                    .substring(1, equation.length)
-                    .substringBefore(operator)
-                    .removeParenthesisIfAvailable()
-                    .addCharAtIndex(equation[0], 0)
-                    .toDouble()
-                val secondNumber = equation
-                    .substring(1, equation.length)
-                    .substringAfter(operator)
-                    .removeParenthesisIfAvailable()
-                    .addCharAtIndex(equation[0], 0)
-                    .toDouble()
-
-                firstNumber to secondNumber
-            }
-            equation[0].toString() == OPENING_PARENTHESIS -> {
-                val firstNumber = equation
-                    .substringBefore(operator)
-                    .removeParenthesisIfAvailable()
-                    .apply { substring(1, this.length) }
-                    .toDouble()
-                val secondNumber = equation
-                    .substringAfter(operator)
-                    .removeParenthesisIfAvailable()
-                    .apply { substring(1, this.length) }
-                    .toDouble()
-
-                firstNumber to secondNumber
-            }
-            else -> {
-                val firstNumber = equation
-                    .substringBefore(operator)
-                    .removeParenthesisIfAvailable()
-                    .toDouble()
-                val secondNumber = equation
-                    .substringAfter(operator)
-                    .removeParenthesisIfAvailable()
-                    .toDouble()
-
-                firstNumber to secondNumber
-
-            }
-        }
-    }
 
     override fun modifyDisplayedResult(number: Double): String {
         val df = DecimalFormat(DECIMAL_FORMAT, DecimalFormatSymbols.getInstance(Locale.US))
@@ -265,18 +173,6 @@ class Calculator @Inject constructor() : CalculatorHelper {
         MATHEMATICAL_EXPRESSION_VALIDATOR.toRegex().matches(equation)
 
 
-    private fun denotesPlusOrMinusSign(equation: String, operator: Char): Boolean {
-        var numberOfOperators = 0
-        equation.forEach {
-            if (it == Operation.ADDITION.operatorSymbol || it == Operation.SUBTRACTION.operatorSymbol) numberOfOperators += 1
-        }
-        return if (numberOfOperators > 1) {
-            false
-        } else {
-            equation.substringBefore(operator).isEmpty()
-        }
-    }
-
     private fun isEquationNotComplete(mathematicalOperation: String, operator: Char): Boolean {
         return mathematicalOperation.substringAfter(operator).isEmpty()
     }
@@ -304,9 +200,6 @@ class Calculator @Inject constructor() : CalculatorHelper {
         val decimalPart = number.toDouble() - intPart
         return decimalPart > 0.0000
     }
-
-    private fun String.addCharAtIndex(char: Char, index: Int) =
-        StringBuilder(this).apply { insert(index, char) }.toString()
 
     companion object {
         private const val DECIMAL_FORMAT = "#.################"

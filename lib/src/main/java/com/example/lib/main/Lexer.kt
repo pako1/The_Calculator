@@ -32,7 +32,6 @@ internal class Lexer {
             while (getCurrentChar().isDigit()) {
                 nextPosition()
             }
-
             val number = readOnly.substring(startPosition, position)
 
             val value = try {
@@ -91,6 +90,14 @@ internal class Lexer {
                     nextPosition(),
                     Operators.CLOSING_PARENTHESIS.operatorSymbol,
                     null
+                )
+            }
+            '.' -> {
+                return SyntaxToken(
+                    SyntaxKind.DotToken,
+                    nextPosition(),
+                    Operators.DOT.operatorSymbol,
+                    position
                 )
             }
             else -> {

@@ -7,5 +7,6 @@ internal enum class Operators(val operatorSymbol: String) {
     MULTIPLICATION("*"),
     OPEN_PARENTHESIS("("),
     CLOSING_PARENTHESIS(")"),
+    DOT("."),
     EOF("\\u0000")
 }

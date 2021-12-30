@@ -1,11 +1,17 @@
 package com.example.lib.main
 
-import com.example.lib.models.*
+import com.example.lib.models.SyntaxKind
+import com.example.lib.models.expressions.*
 
 class Evaluator(val root: ExpressionSyntax) {
 
-    fun evaluate(): Int {
-        return evaluateExpression(root)
+    fun evaluate(): Int? {
+        return try {
+            evaluateExpression(root)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     private fun evaluateExpression(node: ExpressionSyntax): Int {

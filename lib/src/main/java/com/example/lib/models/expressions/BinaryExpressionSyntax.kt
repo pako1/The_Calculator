@@ -1,4 +1,7 @@
-package com.example.lib.models
+package com.example.lib.models.expressions
+
+import com.example.lib.models.SyntaxKind
+import com.example.lib.models.SyntaxToken
 
 internal class BinaryExpressionSyntax(
     val left: ExpressionSyntax,

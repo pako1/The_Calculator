@@ -1,6 +1,6 @@
 package com.example.lib.models
 
-internal data class SyntaxToken(
+ data class SyntaxToken internal constructor(
     val syntaxKind: SyntaxKind,
     val position: Int,
     val text: String?,
