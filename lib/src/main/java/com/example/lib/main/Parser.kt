@@ -91,7 +91,6 @@ class Parser {
             return ParenthesisExpressionSyntax(left, expression, right)
         }
 
-
         return if (provideCurrentToken().syntaxKind == SyntaxKind.PlusToken ||
             provideCurrentToken().syntaxKind == SyntaxKind.MinusToken
         ) {

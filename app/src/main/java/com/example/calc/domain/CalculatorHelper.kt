@@ -82,7 +82,7 @@ class Calculator @Inject constructor() : CalculatorHelper {
         }
         val evaluator = Evaluator(syntaxTree.root)
         val result = evaluator.evaluate()
-        return result?.toString() ?: Operation.INVALID.name
+        return result ?: Operation.INVALID.name
     }
 
 
