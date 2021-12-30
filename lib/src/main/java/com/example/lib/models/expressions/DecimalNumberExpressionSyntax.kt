@@ -4,9 +4,9 @@ import com.example.lib.models.SyntaxKind
 import com.example.lib.models.SyntaxToken
 
 internal open class DecimalNumberExpressionSyntax(
-    val leftNumber: NumberExpressionSyntax,
+    val leftNumber: ExpressionSyntax,
     val dotToken: SyntaxToken,
-    val rightNumber: NumberExpressionSyntax
+    val rightNumber: ExpressionSyntax
 ) : ExpressionSyntax() {
     override var syntaxKind: SyntaxKind = SyntaxKind.DecimalExpression
 }

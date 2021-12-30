@@ -21,7 +21,7 @@ class Evaluator(val root: ExpressionSyntax) {
 
     private fun evaluateExpression(node: ExpressionSyntax): String {
         if (node is NumberExpressionSyntax) {
-            return (node.numberToken.value as Int).toDouble().toString()
+            return (node.numberToken.value as Int).toString()
         }
 
         if (node is UnaryExpressionSyntax) {
@@ -34,12 +34,7 @@ class Evaluator(val root: ExpressionSyntax) {
         }
 
         if (node is DecimalNumberExpressionSyntax) {
-            val dotPosition = node.dotToken.value as Int
-            val number = evaluateExpression(node.leftNumber) + evaluateExpression(node.rightNumber)
-            return number.substring(0, dotPosition) + "." + number.substring(
-                dotPosition,
-                number.length
-            )
+            return (evaluateExpression(node.leftNumber) + "." + evaluateExpression(node.rightNumber)).toDouble().toString()
         }
 
         if (node is BinaryExpressionSyntax) {

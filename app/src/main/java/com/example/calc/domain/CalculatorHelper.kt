@@ -71,7 +71,8 @@ class Calculator @Inject constructor() : CalculatorHelper {
     override fun performEquation(): String {
 
         val parser = Parser()
-        parser.setTextInput(textInput)
+        val equation = Operation.replaceUISymbolToMathSymbol(textInput)
+        parser.setTextInput(equation)
         parser.startProcess()
         val syntaxTree = parser.parse()
         if (syntaxTree.diagnostics.any()) {

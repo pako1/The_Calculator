@@ -80,6 +80,11 @@ class Parser {
             val right = parsePrimaryExpression()
             left = BinaryExpressionSyntax(left = left, operatorToken = operatorToken, right = right)
         }
+        if (provideCurrentToken().syntaxKind == SyntaxKind.DotToken) {
+            val dotToken = nextToken()
+            val right = parsePrimaryExpression()
+            left = DecimalNumberExpressionSyntax(left, dotToken, right)
+        }
         return left
     }
 
