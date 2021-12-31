@@ -9,39 +9,82 @@
         tools:background="@color/calculationsBackground"
         tools:context=".presentation.MainActivity">
 
-        <ImageView
-            android:id="@+id/backspace_btn"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/light_mode_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:minHeight="42dp"
+            android:layout_marginEnd="1dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:icon="@drawable/light_mode"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:layout_constraintEnd_toStartOf="@id/dark_mode_button"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialButton.CutLeft" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dark_mode_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="42dp"
+            android:layout_marginStart="1dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:icon="@drawable/dark_mode"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/light_mode_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/light_mode_button"
+            app:layout_constraintTop_toTopOf="@id/light_mode_button"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialButton.CutRight" />
+
+        <ImageView
+            android:id="@+id/backspace_btn"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="12dp"
             android:contentDescription="@null"
-            app:layout_constraintVertical_bias="0.7"
             android:src="@drawable/ic_backspace"
             app:layout_constraintBottom_toBottomOf="@id/number_input_box"
             app:layout_constraintEnd_toEndOf="@id/result"
+            app:layout_constraintHeight_percent="0.05"
             app:layout_constraintStart_toEndOf="@id/number_input_box"
             app:layout_constraintTop_toTopOf="@id/number_input_box"
+            app:layout_constraintVertical_bias="0.67"
+            app:layout_constraintWidth_percent="0.082"
             app:tint="@color/colorBackSpaceButton" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/number_input_box"
             android:layout_width="0dp"
-            app:hintEnabled="false"
             android:layout_height="wrap_content"
             app:boxBackgroundMode="none"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
+            app:hintEnabled="false"
             app:layout_constraintBottom_toTopOf="@id/result"
             app:layout_constraintEnd_toStartOf="@id/backspace_btn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/light_mode_button"
             app:layout_constraintVertical_bias="1">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/number_input_field"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="end"
+                android:gravity="end|center"
                 android:textColor="@color/textInputLayoutColor"
                 android:textSize="@dimen/text_size_26sp"
                 tools:text="24" />
@@ -54,7 +97,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="@dimen/margin_12dp"
             android:gravity="end"
-            android:maxLength="15"
+            android:maxLength="14"
             android:textColor="@color/resultTextColor"
             android:textSize="@dimen/text_size_30sp"
             android:textStyle="bold"
@@ -63,21 +106,20 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:text="123456789101112" />
 
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/buttonPanel"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:cardElevation="@dimen/margin_12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/margin_16dp">
+                android:layout_height="match_parent">
 
                 <androidx.constraintlayout.helper.widget.Flow
                     android:layout_width="0dp"
@@ -85,7 +127,7 @@
                     android:padding="@dimen/padding_8dp"
                     app:constraint_referenced_ids="ac_btn,root_btn,percent_btn,divide_btn,seven_btn,eight_btn,nine_btn,multiply_btn,four_btn,five_btn,six_btn,minus_btn,one_btn,two_btn,three_btn,plus_btn,positive_negative_converter_btn,zero_btn,dot_btn,equals_btn"
                     app:flow_maxElementsWrap="4"
-                    app:flow_verticalGap="@dimen/margin_12dp"
+                    app:flow_verticalGap="@dimen/margin_8dp"
                     app:flow_wrapMode="aligned"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -97,140 +139,160 @@
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/clear_button_text" />
+                    android:text="@string/clear_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/percent_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/percent_button_text" />
+                    android:text="@string/percent_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/root_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/square_root_button_text" />
+                    android:text="@string/square_root_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/divide_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/divide_button_text" />
+                    android:text="@string/divide_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/seven_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/seven_button_text" />
+                    android:text="@string/seven_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/eight_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/eight_button_text" />
+                    android:text="@string/eight_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/nine_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/nine_button_text" />
+                    android:text="@string/nine_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/multiply_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/multiply_button_text" />
+                    android:text="@string/multiply_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/four_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/four_button_text" />
+                    android:text="@string/four_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/five_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/five_button_text" />
+                    android:text="@string/five_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/six_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/six_button_text" />
+                    android:text="@string/six_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/minus_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/minus_button_text" />
+                    android:text="@string/minus_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/one_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/one_button_text" />
+                    android:text="@string/one_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/two_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/two_button_text" />
+                    android:text="@string/two_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/three_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/three_button_text" />
+                    android:text="@string/three_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/plus_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/plus_button_text" />
+                    android:text="@string/plus_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/positive_negative_converter_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/positive_negative_sign_button_text" />
+                    android:text="@string/positive_negative_sign_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/zero_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/zero_button_text" />
+                    android:text="@string/zero_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/dot_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/decimal_button_text" />
+                    android:text="@string/decimal_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/equals_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="@dimen/calculator_button_width"
                     android:layout_height="@dimen/calculator_button_height"
-                    android:text="@string/equal_button_text" />
+                    android:text="@string/equal_button_text"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

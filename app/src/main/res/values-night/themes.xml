@@ -16,9 +16,27 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
+    <!--Change the component's shape by overriding the style of the component-->
+    <style name="ShapeAppearanceOverlay.MaterialButton.CutRight" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <!--Change the component's shape by overriding the style of the component-->
+    <style name="ShapeAppearanceOverlay.MaterialButton.CutLeft" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
+    </style>
+
     <!--All buttons style-->
     <style name="calculator_button_style" parent="">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="backgroundTint">@color/colorPrimaryDark</item>
         <item name="textAllCaps">false</item>
         <item name="android:insetLeft">0dp</item>
@@ -26,8 +44,11 @@
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:textColor">@color/textColorDark</item>
-        <item name="cornerRadius">40dp</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.MyApp.Button.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 
 </resources>
