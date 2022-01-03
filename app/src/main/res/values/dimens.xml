@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Calculator button dimensions-->
-    <dimen name="calculator_button_width">60dp</dimen>
-    <dimen name="calculator_button_height">60dp</dimen>
+    <dimen name="calculator_button_width">57dp</dimen>
+    <dimen name="calculator_button_height">57dp</dimen>
 
     <!--Calculator Margins-->
     <dimen name="margin_24dp">24dp</dimen>
@@ -19,6 +19,6 @@
     <dimen name="padding_8dp">8dp</dimen>
 
     <!--Calculator text Sizes-->
-    <dimen name="text_size_30sp">36sp</dimen>
-    <dimen name="text_size_26sp">28sp</dimen>
+    <dimen name="text_size_32sp">32sp</dimen>
+    <dimen name="text_size_24sp">24sp</dimen>
 </resources>

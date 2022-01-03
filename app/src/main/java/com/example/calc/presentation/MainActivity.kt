@@ -1,8 +1,11 @@
 package com.example.calc.presentation
 
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.calc.R
 import com.example.calc.data.Operation
 import com.example.calc.databinding.ActivityMainBinding
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var calculatorHelper: CalculatorHelper
 
+
     private lateinit var mainBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,11 +34,42 @@ class MainActivity : AppCompatActivity() {
         initializeButtons()
     }
 
+    private fun isManuallyHandlingOfDarkModePossible(): Boolean {
+        return android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
+    }
+
+    private fun enableDarkMode() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    }
+
+    private fun enableLightMode() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    }
+
     private fun initializeButtons() {
         with(mainBinding) {
+            lifecycleOwner = this@MainActivity
 
             numberInputField.apply {
                 showSoftInputOnFocus = false
+            }
+
+            if (isManuallyHandlingOfDarkModePossible()) {
+                lightModeButton.setOnClickListener {
+                    enableLightMode()
+                    it.isPressed = true
+                    darkModeButton.isPressed = false
+
+                }
+
+                darkModeButton.setOnClickListener {
+                    enableDarkMode()
+                    it.isPressed = true
+                    lightModeButton.isPressed = false
+                }
+            } else {
+                lightModeButton.visibility = View.GONE
+                darkModeButton.visibility = View.GONE
             }
 
             backspaceBtn.setOnClickListener {
@@ -284,6 +319,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+
         }
     }
 
