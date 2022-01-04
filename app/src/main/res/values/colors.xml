@@ -14,5 +14,6 @@
     <color name="colorBackSpaceButton">@color/textColor</color>
     <color name="textInputLayoutColor">@color/textColor</color>
     <color name="resultTextColor">@color/textColor</color>
+    <color name="iconModePickedColor">@color/black</color>
 
 </resources>

@@ -3,4 +3,5 @@
     <color name="colorBackSpaceButton">@color/textColorDark</color>
     <color name="textInputLayoutColor">@color/textColorDark</color>
     <color name="resultTextColor">@color/textColorDark</color>
+    <color name="iconModePickedColor">@color/white</color>
 </resources>

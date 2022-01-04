@@ -1,5 +1,6 @@
 package com.example.calc.presentation
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var calculatorHelper: CalculatorHelper
 
+    private val viewModel by viewModels<MainViewModel>()
 
     private lateinit var mainBinding: ActivityMainBinding
 
@@ -32,6 +34,41 @@ class MainActivity : AppCompatActivity() {
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
         initializeButtons()
+        mainBinding.lifecycleOwner = this
+
+        pickDarkOrLightMode()
+
+        viewModel.result.observe(this, { resultText ->
+            mainBinding.result.text = resultText
+        })
+
+        viewModel.equation.observe(this, { equation ->
+            with(mainBinding) {
+                numberInputField.setText(equation)
+            }
+        })
+    }
+
+    private fun pickDarkOrLightMode() {
+        with(mainBinding) {
+            when (resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                Configuration.UI_MODE_NIGHT_YES -> {
+                    darkModeButton.isClickable = false
+                    darkModeButton.isPressed = true
+                    lightModeButton.isClickable = true
+                    lightModeButton.isPressed = false
+                    lightModeButton.setIconTintResource(R.color.iconModePickedColor)
+                }
+
+                Configuration.UI_MODE_NIGHT_NO, Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                    darkModeButton.isClickable = true
+                    darkModeButton.isPressed = false
+                    lightModeButton.isClickable = false
+                    lightModeButton.isPressed = true
+                    darkModeButton.setIconTintResource(R.color.iconModePickedColor)
+                }
+            }
+        }
     }
 
     private fun isManuallyHandlingOfDarkModePossible(): Boolean {
@@ -57,15 +94,10 @@ class MainActivity : AppCompatActivity() {
             if (isManuallyHandlingOfDarkModePossible()) {
                 lightModeButton.setOnClickListener {
                     enableLightMode()
-                    it.isPressed = true
-                    darkModeButton.isPressed = false
-
                 }
 
                 darkModeButton.setOnClickListener {
                     enableDarkMode()
-                    it.isPressed = true
-                    lightModeButton.isPressed = false
                 }
             } else {
                 lightModeButton.visibility = View.GONE
@@ -378,7 +410,10 @@ class MainActivity : AppCompatActivity() {
     private fun TextInputEditText.insertChar(newChar: Char) {
         val currentCursorPosition = selectionStart
         calculatorHelper.appendTextInputAtPosition(newChar, currentCursorPosition)
-        text?.insert(currentCursorPosition, newChar.toString())
+        viewModel.equation.postValue(
+            text?.insert(currentCursorPosition, newChar.toString()).toString()
+        )
+        setSelection(currentCursorPosition)
     }
 
     companion object {
