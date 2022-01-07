@@ -48,10 +48,11 @@
         <item name="textAllCaps">false</item>
         <item name="android:insetLeft">0dp</item>
         <item name="android:insetRight">0dp</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:textColor">@color/textColor</item>
+        <item name="layout_constraintHeight_percent">0.15</item>
+        <item name="layout_constraintWidth_percent">0.2</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.MyApp.Button.Circle" parent="">

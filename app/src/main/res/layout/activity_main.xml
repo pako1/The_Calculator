@@ -14,13 +14,13 @@
             style="@style/calculator_button_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:insetLeft="0dp"
             android:insetTop="0dp"
             android:insetRight="0dp"
             android:insetBottom="0dp"
             android:minWidth="65dp"
-            android:minHeight="50dp"
+            android:minHeight="40dp"
             android:padding="0dp"
             app:icon="@drawable/light_mode"
             app:iconGravity="textStart"
@@ -42,7 +42,7 @@
             android:insetRight="0dp"
             android:insetBottom="0dp"
             android:minWidth="65dp"
-            android:minHeight="50dp"
+            android:minHeight="40dp"
             android:padding="0dp"
             app:icon="@drawable/dark_mode"
             app:iconGravity="textStart"
@@ -118,7 +118,7 @@
             app:cardElevation="@dimen/margin_12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent="0.58"
+            app:layout_constraintHeight_percent="0.6"
             app:layout_constraintStart_toStartOf="parent"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialCardView.Cut">
 
@@ -129,13 +129,14 @@
                 <androidx.constraintlayout.helper.widget.Flow
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:constraint_referenced_ids="ac_btn,root_btn,percent_btn,divide_btn,seven_btn,eight_btn,nine_btn,multiply_btn,four_btn,five_btn,six_btn,minus_btn,one_btn,two_btn,three_btn,plus_btn,positive_negative_converter_btn,zero_btn,dot_btn,equals_btn"
+                    app:constraint_referenced_ids="ac_btn,root_btn,percent_btn,factorial_btn,divide_btn,open_parenthesis_btn,close_parenthesis_btn,log_btn,seven_btn,eight_btn,nine_btn,multiply_btn,four_btn,five_btn,six_btn,minus_btn,one_btn,two_btn,three_btn,plus_btn,dot_btn,zero_btn,positive_negative_converter_btn,equals_btn"
                     app:flow_maxElementsWrap="4"
                     app:flow_wrapMode="aligned"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHeight_default="percent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/ac_btn"
@@ -143,8 +144,6 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/clear_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -153,8 +152,14 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/percent_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/factorial_btn"
+                    style="@style/calculator_button_style"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text="!"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -163,8 +168,6 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/square_root_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -173,8 +176,6 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/divide_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -182,43 +183,31 @@
                     style="@style/calculator_button_style"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-
                     android:text="@string/seven_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/eight_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="0dp"
-
                     android:layout_height="0dp"
                     android:text="@string/eight_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/nine_btn"
-
                     style="@style/calculator_button_style"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/nine_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/multiply_btn"
                     style="@style/calculator_button_style"
-
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/multiply_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -227,8 +216,6 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/four_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -237,8 +224,6 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/five_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -246,21 +231,15 @@
                     style="@style/calculator_button_style"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-
                     android:text="@string/six_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/minus_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="0dp"
-
                     android:layout_height="0dp"
                     android:text="@string/minus_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -269,30 +248,22 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/one_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/two_btn"
                     style="@style/calculator_button_style"
                     android:layout_width="0dp"
-
                     android:layout_height="0dp"
                     android:text="@string/two_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/three_btn"
                     style="@style/calculator_button_style"
-
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/three_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -301,8 +272,6 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/plus_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -311,8 +280,6 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/positive_negative_sign_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -321,8 +288,6 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/zero_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -331,8 +296,6 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/decimal_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -341,8 +304,30 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:text="@string/equal_button_text"
-                    app:layout_constraintHeight_percent="0.18"
-                    app:layout_constraintWidth_percent="0.19"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/open_parenthesis_btn"
+                    style="@style/calculator_button_style"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text="("
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/close_parenthesis_btn"
+                    style="@style/calculator_button_style"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text=")"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/log_btn"
+                    style="@style/calculator_button_style"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text="log"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

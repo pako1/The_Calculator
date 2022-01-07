@@ -28,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mainBinding: ActivityMainBinding
 
+    private var currentCursorPosition = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_The_Calculator)
         super.onCreate(savedInstanceState)
@@ -42,11 +44,27 @@ class MainActivity : AppCompatActivity() {
             mainBinding.result.text = resultText
         })
 
-        viewModel.equation.observe(this, { equation ->
+        viewModel.equation.observe(this, { updatedEquation ->
             with(mainBinding) {
-                numberInputField.setText(equation)
+                numberInputField.setText(updatedEquation)
+                val cursorPosition = if (updatedEquation.isEmpty()) {
+                    0
+                } else {
+                    currentCursorPosition + 1
+                }
+                numberInputField.setSelection(cursorPosition)
             }
         })
+    }
+
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        savedInstanceState.putInt(CURSOR_POSITION_KEY, currentCursorPosition)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        currentCursorPosition = savedInstanceState.getInt(CURSOR_POSITION_KEY, 0)
     }
 
     private fun pickDarkOrLightMode() {
@@ -71,17 +89,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun isManuallyHandlingOfDarkModePossible(): Boolean {
-        return android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
-    }
+    private fun isManuallyHandlingOfDarkModePossible(): Boolean =
+        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
-    private fun enableDarkMode() {
+    private fun enableDarkMode() =
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-    }
 
-    private fun enableLightMode() {
+    private fun enableLightMode() =
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-    }
+
 
     private fun initializeButtons() {
         with(mainBinding) {
@@ -348,6 +364,7 @@ class MainActivity : AppCompatActivity() {
                     }
                     else -> {
                         result.text = operationResult
+                        //viewModel.equation.postValue(operationResult)
                     }
                 }
             }
@@ -408,15 +425,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun TextInputEditText.insertChar(newChar: Char) {
-        val currentCursorPosition = selectionStart
+        currentCursorPosition = selectionStart
         calculatorHelper.appendTextInputAtPosition(newChar, currentCursorPosition)
         viewModel.equation.postValue(
             text?.insert(currentCursorPosition, newChar.toString()).toString()
         )
-        setSelection(currentCursorPosition)
     }
 
     companion object {
         private const val DOT_CHAR = '.'
+        private const val CURSOR_POSITION_KEY = "CursorPosition_KEY"
     }
 }
