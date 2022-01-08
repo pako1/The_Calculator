@@ -35,8 +35,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
-        initializeButtons()
         mainBinding.lifecycleOwner = this
+
+        initializeButtons()
 
         pickDarkOrLightMode()
 
@@ -52,7 +53,11 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     currentCursorPosition + 1
                 }
-                numberInputField.setSelection(cursorPosition)
+                try {
+                    numberInputField.setSelection(cursorPosition)
+                } catch (e: Exception) {
+                    numberInputField.setSelection(updatedEquation.length)
+                }
             }
         })
     }
@@ -167,13 +172,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            backspaceBtn.setOnLongClickListener {
-                calculatorHelper.resetResult()
-                calculatorHelper.resetTextInput()
-                numberInputField.text?.clear()
-                result.text = ""
-                false
-            }
+            backspaceBtn.setOnLongClickListener { clearAll(); false }
 
             oneBtn.setOnClickListener { numberInputField.insertChar('1') }
 
@@ -197,12 +196,7 @@ class MainActivity : AppCompatActivity() {
 
             dotBtn.setOnClickListener { applyDot(numberInputField, result) }
 
-            acBtn.setOnClickListener {
-                calculatorHelper.resetResult()
-                calculatorHelper.resetTextInput()
-                numberInputField.text?.clear()
-                result.text = ""
-            }
+            acBtn.setOnClickListener { clearAll() }
 
             multiplyBtn.setOnClickListener {
                 applyOperatorOnEquation(
@@ -357,19 +351,27 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            factorialBtn.setOnClickListener { numberInputField.insertChar('!') }
+
             equalsBtn.setOnClickListener {
                 when (val operationResult = calculatorHelper.performEquation()) {
                     Operation.INVALID.name, Operation.INCOMPLETE.name, Operation.SIGNED_NUMBER_REPRESENTATION.name -> {
                         return@setOnClickListener
                     }
                     else -> {
-                        result.text = operationResult
-                        //viewModel.equation.postValue(operationResult)
+                        viewModel.result.postValue(operationResult)
                     }
                 }
             }
 
         }
+    }
+
+    private fun clearAll() {
+        calculatorHelper.resetResult()
+        calculatorHelper.resetTextInput()
+        viewModel.result.postValue("")
+        viewModel.equation.postValue("")
     }
 
     private fun applyDot(numberInputField: TextInputEditText, result: TextView) {

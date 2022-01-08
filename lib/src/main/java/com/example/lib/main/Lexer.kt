@@ -100,6 +100,14 @@ internal class Lexer {
                     position
                 )
             }
+            '!' -> {
+                return SyntaxToken(
+                    SyntaxKind.FactorialToken,
+                    nextPosition(),
+                    Operators.FACTORIAL.operatorSymbol,
+                    null
+                )
+            }
             else -> {
                 diagnostics.add("Bad character input ${getCurrentChar()}")
                 return SyntaxToken(

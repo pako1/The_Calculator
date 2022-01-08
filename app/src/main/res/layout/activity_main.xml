@@ -159,7 +159,7 @@
                     style="@style/calculator_button_style"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:text="!"
+                    android:text="@string/factorial_button"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -311,7 +311,7 @@
                     style="@style/calculator_button_style"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:text="("
+                    android:text="@string/open_parenthesis_button"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -319,7 +319,7 @@
                     style="@style/calculator_button_style"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:text=")"
+                    android:text="@string/close_parenthesis_button"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
                 <com.google.android.material.button.MaterialButton
@@ -327,7 +327,7 @@
                     style="@style/calculator_button_style"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:text="log"
+                    android:text="@string/log_button"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

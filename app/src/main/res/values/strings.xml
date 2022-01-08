@@ -21,4 +21,8 @@
     <string name="zero_button_text">0</string>
     <string name="decimal_button_text">.</string>
     <string name="equal_button_text">=</string>
+    <string name="open_parenthesis_button">(</string>
+    <string name="close_parenthesis_button">)</string>
+    <string name="log_button">log</string>
+    <string name="factorial_button">!</string>
 </resources>

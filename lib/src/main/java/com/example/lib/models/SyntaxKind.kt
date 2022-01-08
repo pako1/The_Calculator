@@ -7,6 +7,7 @@ enum class SyntaxKind {
     MinusToken,
     StarToken,
     SlashToken,
+    FactorialToken,
     OpenParenthesisToken,
     CloseParenthesisToken,
     UnrecognizedToken,
@@ -15,5 +16,6 @@ enum class SyntaxKind {
     DecimalExpression,
     BinaryExpression,
     ParenthesizedExpression,
+    FactorialExpression,
     UnaryExpression
 }

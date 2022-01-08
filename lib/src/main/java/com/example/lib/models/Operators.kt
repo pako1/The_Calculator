@@ -8,5 +8,6 @@ internal enum class Operators(val operatorSymbol: String) {
     OPEN_PARENTHESIS("("),
     CLOSING_PARENTHESIS(")"),
     DOT("."),
+    FACTORIAL("!"),
     EOF("\\u0000")
 }
