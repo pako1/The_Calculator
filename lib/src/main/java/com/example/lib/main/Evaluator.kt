@@ -2,6 +2,7 @@ package com.example.lib.main
 
 import com.example.lib.models.SyntaxKind
 import com.example.lib.models.expressions.*
+import kotlin.math.sign
 import kotlin.math.sqrt
 
 class Evaluator(val root: ExpressionSyntax) {
@@ -31,15 +32,25 @@ class Evaluator(val root: ExpressionSyntax) {
                 if (left.toDouble() == 0.0 || left.toDouble() == 1.0) {
                     "1.0"
                 } else {
+                    //todo gama formula is not right probably... :/
                     return ((sqrt(Math.PI)) * left.toDouble()).toString()
                 }
             } else {
-                if (left.toInt() == 0 || left.toInt() == 1)
+                var leftAsInt = left.toDouble().toInt()
+                var isNegative = false
+                if (leftAsInt.sign == -1) {
+                    leftAsInt *= -1
+                    isNegative = true
+                }
+                if (leftAsInt == 0 || leftAsInt == 1)
                     "1"
                 else {
                     var factorial = 1
-                    for (i in 1..left.toInt()) {
+                    for (i in 1..leftAsInt) {
                         factorial *= i
+                    }
+                    if (isNegative) {
+                        factorial *= -1
                     }
                     factorial.toString()
                 }
@@ -84,6 +95,6 @@ class Evaluator(val root: ExpressionSyntax) {
     private fun hasDecimalPart(number: String): Boolean {
         val intPart = number.toDouble().toInt()
         val decimalPart = number.toDouble() - intPart
-        return decimalPart > 0.0000 || number.contains(".")
+        return decimalPart > 0.0000
     }
 }
