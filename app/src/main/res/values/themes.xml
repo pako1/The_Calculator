@@ -7,6 +7,19 @@
         <item name="colorSurface">@color/colorCardBackground</item>
         <item name="android:colorControlActivated">@color/textColor</item>
         <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
+    </style>
+
+    <style name="Widget.App.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Snackbar</item>
+    </style>
+
+    <style name="Widget.App.SnackbarButton" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Snackbar" parent="">
+        <item name="colorOnSurface">@android:color/holo_red_dark</item>
     </style>
 
     <style name="Theme.SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -59,5 +72,5 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
-
+    
 </resources>

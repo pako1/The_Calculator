@@ -12,6 +12,7 @@ import com.example.calc.data.Operation
 import com.example.calc.databinding.ActivityMainBinding
 import com.example.calc.domain.CalculatorHelper
 import com.example.calc.domain.toPercent
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -43,11 +44,13 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.result.observe(this, { resultText ->
             mainBinding.result.text = resultText
+            calculatorHelper.setTextResult(resultText)
         })
 
         viewModel.equation.observe(this, { updatedEquation ->
             with(mainBinding) {
                 numberInputField.setText(updatedEquation)
+                calculatorHelper.setTextInput(updatedEquation)
                 val cursorPosition = if (updatedEquation.isEmpty()) {
                     0
                 } else {
@@ -77,17 +80,17 @@ class MainActivity : AppCompatActivity() {
             when (resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
                 Configuration.UI_MODE_NIGHT_YES -> {
                     darkModeButton.isClickable = false
-                    darkModeButton.isPressed = true
+                    darkModeButton.isPressed = false
                     lightModeButton.isClickable = true
-                    lightModeButton.isPressed = false
+                    lightModeButton.isPressed = true
                     lightModeButton.setIconTintResource(R.color.iconModePickedColor)
                 }
 
                 Configuration.UI_MODE_NIGHT_NO, Configuration.UI_MODE_NIGHT_UNDEFINED -> {
                     darkModeButton.isClickable = true
-                    darkModeButton.isPressed = false
+                    darkModeButton.isPressed = true
                     lightModeButton.isClickable = false
-                    lightModeButton.isPressed = true
+                    lightModeButton.isPressed = false
                     darkModeButton.setIconTintResource(R.color.iconModePickedColor)
                 }
             }
@@ -199,35 +202,19 @@ class MainActivity : AppCompatActivity() {
             acBtn.setOnClickListener { clearAll() }
 
             multiplyBtn.setOnClickListener {
-                applyOperatorOnEquation(
-                    Operation.MULTIPLICATION.operatorSymbol,
-                    numberInputField,
-                    result
-                )
+                numberInputField applyOperatorOnEquation Operation.MULTIPLICATION.operatorSymbol
             }
 
             divideBtn.setOnClickListener {
-                applyOperatorOnEquation(
-                    Operation.DIVISION.operatorSymbol,
-                    numberInputField,
-                    result
-                )
+                numberInputField applyOperatorOnEquation Operation.DIVISION.operatorSymbol
             }
 
             minusBtn.setOnClickListener {
-                applyOperatorOnEquation(
-                    Operation.SUBTRACTION.operatorSymbol,
-                    numberInputField,
-                    result
-                )
+                numberInputField applyOperatorOnEquation Operation.SUBTRACTION.operatorSymbol
             }
 
             plusBtn.setOnClickListener {
-                applyOperatorOnEquation(
-                    Operation.ADDITION.operatorSymbol,
-                    numberInputField,
-                    result
-                )
+                numberInputField applyOperatorOnEquation Operation.ADDITION.operatorSymbol
             }
 
             percentBtn.setOnClickListener {
@@ -356,10 +343,15 @@ class MainActivity : AppCompatActivity() {
             equalsBtn.setOnClickListener {
                 when (val operationResult = calculatorHelper.performEquation()) {
                     Operation.INVALID.name, Operation.INCOMPLETE.name, Operation.SIGNED_NUMBER_REPRESENTATION.name -> {
+                        Snackbar.make(
+                            mainBinding.root,
+                            "Not valid operation, check your equation",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                         return@setOnClickListener
                     }
                     else -> {
-                        viewModel.result.postValue(operationResult)
+                        viewModel.result.value = operationResult
                     }
                 }
             }
@@ -368,25 +360,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun clearAll() {
-        calculatorHelper.resetResult()
-        calculatorHelper.resetTextInput()
-        viewModel.result.postValue("")
-        viewModel.equation.postValue("")
+        viewModel.result.value = ""
+        viewModel.equation.value = ""
     }
 
     private fun applyDot(numberInputField: TextInputEditText, result: TextView) {
         val isTherePreviousResult = calculatorHelper.doesResultExist()
         val calculationResult = calculatorHelper.getTextResult()
         if (isTherePreviousResult) {
-            if (calculationResult[numberInputField.selectionStart - 1] == DOT_CHAR) {
+            if (calculationResult[result.length() - 1] == DOT_CHAR) {
                 return
             }
-            numberInputField.setText(calculationResult)
-            calculatorHelper.setTextInput(calculationResult)
-            numberInputField.setSelection(calculationResult.length)
+            viewModel.equation.value = calculationResult
             numberInputField.insertChar(DOT_CHAR)
-            calculatorHelper.resetResult()
-            result.text = ""
+            viewModel.result.value = ""
         } else {
             if ((numberInputField.length() >= 0 && numberInputField.selectionStart == 0) || numberInputField.doesContainOperator()) {
                 return
@@ -399,25 +386,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun applyOperatorOnEquation(
-        operator: Char,
-        numberInputField: TextInputEditText,
-        result: TextView
-    ) {
+    private infix fun TextInputEditText.applyOperatorOnEquation(operator: Char) {
         val isTherePreviousResult = calculatorHelper.doesResultExist()
+        val calculationResult = calculatorHelper.getTextResult()
         if (isTherePreviousResult) {
-            val calculationResult = calculatorHelper.getTextResult()
-            numberInputField.setText(calculationResult)
-            calculatorHelper.setTextInput(calculationResult)
-            numberInputField.setSelection(calculationResult.length)
-            numberInputField.insertChar(operator)
-            calculatorHelper.resetResult()
-            result.text = ""
+            viewModel.equation.value = calculationResult
+            insertChar(operator)
+            viewModel.result.value = ""
         } else {
-            if ((numberInputField.length() >= 0 && numberInputField.selectionStart == 0) || numberInputField.doesContainOperator()) {
+            if ((length() >= 0 && selectionStart == 0) || doesContainOperator()) {
                 return
             } else {
-                numberInputField.insertChar(operator)
+                insertChar(operator)
             }
         }
     }
@@ -429,9 +409,8 @@ class MainActivity : AppCompatActivity() {
     private fun TextInputEditText.insertChar(newChar: Char) {
         currentCursorPosition = selectionStart
         calculatorHelper.appendTextInputAtPosition(newChar, currentCursorPosition)
-        viewModel.equation.postValue(
+        viewModel.equation.value =
             text?.insert(currentCursorPosition, newChar.toString()).toString()
-        )
     }
 
     companion object {

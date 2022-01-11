@@ -5,6 +5,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:statusBarColor">@color/colorSecondaryDark</item>
         <item name="android:colorControlActivated">@color/textColorDark</item>
+        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
+    </style>
+
+    <style name="Widget.App.Snackbar" parent="Widget.MaterialComponents.Snackbar">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Snackbar</item>
+    </style>
+
+    <style name="Widget.App.SnackbarButton" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Snackbar" parent="">
+        <item name="colorOnSurface">@android:color/holo_red_light</item>
     </style>
 
     <!--Change the component's shape by overriding the style of the component-->

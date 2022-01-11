@@ -63,6 +63,8 @@ class Parser {
         var left = parseFactor()
         while (provideCurrentToken().syntaxKind == SyntaxKind.PlusToken
             || provideCurrentToken().syntaxKind == SyntaxKind.MinusToken
+            || provideCurrentToken().syntaxKind == SyntaxKind.StarToken
+            || provideCurrentToken().syntaxKind == SyntaxKind.SlashToken
         ) {
             val operatorToken = nextToken()
             val right = parseFactor()
