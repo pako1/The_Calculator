@@ -3,7 +3,6 @@ package com.example.lib.main
 import com.example.lib.models.SyntaxKind
 import com.example.lib.models.expressions.*
 import kotlin.math.sign
-import kotlin.math.sqrt
 
 class Evaluator(val root: ExpressionSyntax) {
 
@@ -28,33 +27,29 @@ class Evaluator(val root: ExpressionSyntax) {
 
         if (node is FactorialExpressionSyntax) {
             val left = evaluateExpression(node.leftNumber)
-            return if (hasDecimalPart(left)) {
-                if (left.toDouble() == 0.0 || left.toDouble() == 1.0) {
-                    "1.0"
-                } else {
-                    //todo gama formula is not right probably... :/
-                    return ((sqrt(Math.PI)) * left.toDouble()).toString()
-                }
-            } else {
-                var leftAsInt = left.toDouble().toInt()
-                var isNegative = false
-                if (leftAsInt.sign == -1) {
-                    leftAsInt *= -1
-                    isNegative = true
-                }
-                if (leftAsInt == 0 || leftAsInt == 1)
-                    "1"
-                else {
-                    var factorial = 1
-                    for (i in 1..leftAsInt) {
-                        factorial *= i
-                    }
-                    if (isNegative) {
-                        factorial *= -1
-                    }
-                    factorial.toString()
-                }
+            if (hasDecimalPart(left)) {
+                return ""
             }
+            var leftAsInt = left.toDouble().toInt()
+            var isNegative = false
+            if (leftAsInt.sign == -1) {
+                leftAsInt *= -1
+                isNegative = true
+            }
+
+            leftAsInt = if (leftAsInt == 0 || leftAsInt == 1)
+                1
+            else {
+                var factorial = 1
+                for (i in 1..leftAsInt) {
+                    factorial *= i
+                }
+                if (isNegative) {
+                    factorial *= -1
+                }
+                factorial
+            }
+            return leftAsInt.toString()
 
         }
 
