@@ -1,6 +1,7 @@
 # The Calculator
 
-"The Calculator" is an android application made for simple calculations for now.
+"The Calculator" is an android application that is using state of the art components and is made for simple calculations for now.
+It is using a custom lexer/parser/evaluator library for doing the calculations.
 
 ## Features
 - Addition
@@ -9,6 +10,7 @@
 - Division
 - Square Root
 - Percentage
+- Factorial
 - History of previous calculations
 - Night & Day mode
 
@@ -17,7 +19,7 @@
 
 ### RoadMap :calendar:
 - Adding scientific mode for more complex calculations
-- Adding instrumented tests
+- Adding Junit tests & instrumented tests
 - Adding CI/CD for faster testing, merging etc..
 
 #### Language
@@ -37,7 +39,8 @@
 - [Databinding](https://developer.android.com/topic/libraries/data-binding)
 - [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
 - [Junit](https://developer.android.com/training/testing/unit-testing/local-unit-tests)
-
+- [viewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
+- [KotlinTest](https://github.com/kotest/kotest)
 
 ## Installation
 
