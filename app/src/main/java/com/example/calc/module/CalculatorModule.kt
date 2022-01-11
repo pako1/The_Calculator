@@ -16,5 +16,5 @@ abstract class CalculatorModule {
     // the calculator class
     @Binds
     abstract fun providesCalculatorHelper(calculator: Calculator): CalculatorHelper
-
 }
+

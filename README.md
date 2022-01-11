@@ -41,6 +41,8 @@ It is using a custom lexer/parser/evaluator library for doing the calculations.
 - [Junit](https://developer.android.com/training/testing/unit-testing/local-unit-tests)
 - [viewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
 - [KotlinTest](https://github.com/kotest/kotest)
+- [Coroutines](https://kotlinlang.org/docs/coroutines-guide.html)
+- [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
 
 ## Installation
 
