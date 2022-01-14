@@ -46,31 +46,33 @@ class MainActivity : AppCompatActivity() {
         mainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mainBinding.root)
         mainBinding.lifecycleOwner = this
-
         initializeButtons()
 
-        viewModel.result.observe(this, { resultText ->
-            mainBinding.result.text = resultText
-            calculatorHelper.setTextResult(resultText)
-        })
+        lifecycleScope.launch {
 
-        viewModel.equation.observe(this, { updatedEquation ->
-            with(mainBinding) {
-                numberInputField.setText(updatedEquation)
-                calculatorHelper.setTextInput(updatedEquation)
-                val cursorPosition = if (updatedEquation.isEmpty()) {
-                    0
-                } else {
-                    currentCursorPosition + 1
+            viewModel.result.observe(this@MainActivity, { resultText ->
+                mainBinding.result.text = resultText
+                calculatorHelper.setTextResult(resultText)
+            })
+
+            viewModel.equation.observe(this@MainActivity, { updatedEquation ->
+                with(mainBinding) {
+                    numberInputField.setText(updatedEquation)
+                    calculatorHelper.setTextInput(updatedEquation)
+                    val cursorPosition = if (updatedEquation.isEmpty()) {
+                        0
+                    } else {
+                        currentCursorPosition + 1
+                    }
+                    try {
+                        numberInputField.setSelection(cursorPosition)
+                    } catch (e: Exception) {
+                        numberInputField.setSelection(updatedEquation.length)
+                    }
                 }
-                try {
-                    numberInputField.setSelection(cursorPosition)
-                } catch (e: Exception) {
-                    numberInputField.setSelection(updatedEquation.length)
-                }
-            }
-        })
-        pickDarkOrLightMode()
+            })
+            pickDarkOrLightMode()
+        }
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
@@ -83,59 +85,58 @@ class MainActivity : AppCompatActivity() {
         currentCursorPosition = savedInstanceState.getInt(CURSOR_POSITION_KEY, 0)
     }
 
-    private  fun pickDarkOrLightMode() {
-        lifecycleScope.launch {
-            dataStoreManager.retrieveDarkLightMode()
-                .collect {
-                    withContext(Main) {
-                        with(mainBinding) {
-                            when (it) {
-                                true -> {
-                                    enableDarkMode()
-                                    darkModeButton.isClickable = false
-                                    darkModeButton.isPressed = false
-                                    lightModeButton.isClickable = true
-                                    lightModeButton.isPressed = true
-                                    lightModeButton.setIconTintResource(R.color.iconModePickedColor)
-                                }
-                                false -> {
-                                    enableLightMode()
-                                    darkModeButton.isClickable = true
-                                    darkModeButton.isPressed = true
-                                    lightModeButton.isClickable = false
-                                    lightModeButton.isPressed = false
-                                    darkModeButton.setIconTintResource(R.color.iconModePickedColor)
-                                }
-                                else -> {
-                                    when (resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
-                                        Configuration.UI_MODE_NIGHT_YES -> {
-                                            darkModeButton.isClickable = false
-                                            darkModeButton.isPressed = false
-                                            lightModeButton.isClickable = true
-                                            lightModeButton.isPressed = true
-                                            lightModeButton.setIconTintResource(R.color.iconModePickedColor)
-                                        }
-                                        Configuration.UI_MODE_NIGHT_NO, Configuration.UI_MODE_NIGHT_UNDEFINED -> {
-                                            darkModeButton.isClickable = true
-                                            darkModeButton.isPressed = true
-                                            lightModeButton.isClickable = false
-                                            lightModeButton.isPressed = false
-                                            darkModeButton.setIconTintResource(R.color.iconModePickedColor)
-                                        }
+    private suspend fun pickDarkOrLightMode() {
+        dataStoreManager.retrieveDarkLightMode()
+            .collect {
+                withContext(Main) {
+                    with(mainBinding) {
+                        when (it) {
+                            true -> {
+                                enableDarkMode()
+                                darkModeButton.isClickable = false
+                                darkModeButton.isPressed = false
+                                lightModeButton.isClickable = true
+                                lightModeButton.isPressed = true
+                                lightModeButton.setIconTintResource(R.color.iconModePickedColor)
+                            }
+                            false -> {
+                                enableLightMode()
+                                darkModeButton.isClickable = true
+                                darkModeButton.isPressed = true
+                                lightModeButton.isClickable = false
+                                lightModeButton.isPressed = false
+                                darkModeButton.setIconTintResource(R.color.iconModePickedColor)
+                            }
+                            else -> {
+                                when (resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
+                                    Configuration.UI_MODE_NIGHT_YES -> {
+                                        darkModeButton.isClickable = false
+                                        darkModeButton.isPressed = false
+                                        lightModeButton.isClickable = true
+                                        lightModeButton.isPressed = true
+                                        lightModeButton.setIconTintResource(R.color.iconModePickedColor)
+                                    }
+                                    Configuration.UI_MODE_NIGHT_NO, Configuration.UI_MODE_NIGHT_UNDEFINED -> {
+                                        darkModeButton.isClickable = true
+                                        darkModeButton.isPressed = true
+                                        lightModeButton.isClickable = false
+                                        lightModeButton.isPressed = false
+                                        darkModeButton.setIconTintResource(R.color.iconModePickedColor)
                                     }
                                 }
                             }
                         }
                     }
                 }
-        }
+            }
     }
 
     private fun isManuallyHandlingOfDarkModePossible(): Boolean =
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
-    private fun enableDarkMode() =
+    private fun enableDarkMode() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+    }
 
     private fun enableLightMode() =
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

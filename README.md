@@ -1,5 +1,7 @@
 # The Calculator
 
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fpako1%2FThe_Calculator&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Views&edge_flat=false)](https://hits.seeyoufarm.com)
+
 "The Calculator" is an android application that is using state of the art components and is made for simple calculations for now.
 It is using a custom lexer/parser/evaluator library for doing the calculations.
 
