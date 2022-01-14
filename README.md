@@ -63,17 +63,17 @@ Pull requests and suggestions are welcome. Please open an issue first to discuss
 
 ### Happy Path
 
-1. Fork it
+1. Fork it.
 
-2. Create your feature branch (git checkout -b my-new-feature)
+2. Create your feature branch (git checkout -b my-new-feature).
 
-3. Commit your changes (git commit -m 'Add some feature')
+3. Commit your changes (git commit -m 'Add some feature').
 
-4. Push your branch (git push origin my-new-feature)
+4. Push your branch (git push origin my-new-feature).
 
 5. Please make sure to update tests as appropriate.
 
-6. Create a new Pull Request
+6. Create a new Pull Request by using the template.
 
 ## License
 
@@ -82,4 +82,4 @@ Pull requests and suggestions are welcome. Please open an issue first to discuss
 
 ## Do you like my work?
 
-###### :star2: A star will be appriciated if you think it might be helpful. :star2:
+##### :star2: A star will be appriciated if you think it might be helpful. :star2:

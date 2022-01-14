@@ -134,9 +134,8 @@ class MainActivity : AppCompatActivity() {
     private fun isManuallyHandlingOfDarkModePossible(): Boolean =
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
-    private fun enableDarkMode() {
+    private fun enableDarkMode() =
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-    }
 
     private fun enableLightMode() =
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -380,6 +379,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             factorialBtn.setOnClickListener { numberInputField.insertChar('!') }
+
+            openParenthesisBtn.setOnClickListener {numberInputField.insertChar('(') }
+
+            closeParenthesisBtn.setOnClickListener { numberInputField.insertChar(')')}
+
+            logBtn.setOnClickListener {}
 
             equalsBtn.setOnClickListener {
                 when (val operationResult = calculatorHelper.performEquation()) {
