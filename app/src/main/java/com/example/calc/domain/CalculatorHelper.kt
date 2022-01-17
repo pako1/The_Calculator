@@ -82,12 +82,6 @@ interface CalculatorHelper {
     fun isNegative(textInput: String): Boolean
 
     /**
-     * Checks the fidelity of the equation, so that we can prevent
-     * the calculation of invalid equations.
-     */
-    fun isEquationCorrect(equation: String): Boolean
-
-    /**
      * Checks if there is an operator at the end of the equation, so that we can prevent
      * calculations of incomplete equations.
      */
@@ -234,10 +228,6 @@ class Calculator @Inject constructor() : CalculatorHelper {
         return containsAlreadyOperator
     }
 
-    override fun isEquationCorrect(equation: String): Boolean =
-        MATHEMATICAL_EXPRESSION_VALIDATOR.toRegex().matches(equation)
-
-
     private fun isEquationNotComplete(mathematicalOperation: String, operator: Char): Boolean {
         return mathematicalOperation.substringAfter(operator).isEmpty()
     }
@@ -268,8 +258,6 @@ class Calculator @Inject constructor() : CalculatorHelper {
 
     companion object {
         private const val DECIMAL_FORMAT = "#.################"
-        private const val MATHEMATICAL_EXPRESSION_VALIDATOR =
-            "^(([(])?[-+/×]*\\d+(\\.\\d+)?([)]?))*([-+/×])(([(])?[-+/×]*\\d+(\\.\\d+)?([)]?))*\$"
         private const val NUMBER_VALIDATOR = "\\d+"
         private const val REVERSE_ATTRIBUTE = -1
         private const val OPENING_PARENTHESIS = "("

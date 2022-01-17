@@ -88,8 +88,7 @@ class Parser {
             left = DecimalNumberExpressionSyntax(left, dotToken, right)
         }
         if (provideCurrentToken().syntaxKind == SyntaxKind.FactorialToken){
-            val factorialToken = nextToken()
-            left = FactorialExpressionSyntax(left,factorialToken)
+            left = FactorialExpressionSyntax(left)
         }
         return left
     }

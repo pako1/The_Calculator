@@ -11,7 +11,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class DataStoreManager @Inject constructor(private val context: Context) {
-    private val Context.dataStore by preferencesDataStore("preferences")
+    private val Context.dataStore by preferencesDataStore(DATA_STORE_NAME)
 
     suspend fun saveDarkLightMode(isNightModeEnabled: Boolean) {
         context.dataStore.edit {
@@ -24,6 +24,7 @@ class DataStoreManager @Inject constructor(private val context: Context) {
         .map { it[DAY_NIGHT_MODE] }
 
     companion object {
+        private const val DATA_STORE_NAME = "preferences"
         val DAY_NIGHT_MODE = booleanPreferencesKey("DayNightModeKey")
     }
 

@@ -1,11 +1,16 @@
 package com.example.calc.domain
 
+import com.example.calc.data.Operation
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class CalculatorTest {
 
-    private val listOfOperations = listOf("3+3", "3", " ", "3+9+")
+    private val listOfOperations = listOf(
+        "3+3", "3", " ", "3+9+",
+        "2*2", "2+3*(6-2)", "--4",
+        "9/2+(4*2)", "10!", "))((()"
+    )
 
     @Test
     fun appendTextInputAtPosition() {
@@ -42,6 +47,27 @@ class CalculatorTest {
 
     @Test
     fun performEquation() {
+        val calculator = Calculator()
+        calculator.setTextInput(listOfOperations[0])
+        assertEquals("6", calculator.performEquation())
+        calculator.setTextInput(listOfOperations[1])
+        assertEquals("3", calculator.performEquation())
+        calculator.setTextInput(listOfOperations[2])
+        assertEquals(Operation.INVALID.name, calculator.performEquation())
+        calculator.setTextInput(listOfOperations[3])
+        assertEquals(Operation.INVALID.name, calculator.performEquation())
+        calculator.setTextInput(listOfOperations[4])
+        assertEquals("4", calculator.performEquation())
+        calculator.setTextInput(listOfOperations[5])
+        assertEquals("14", calculator.performEquation())
+        calculator.setTextInput(listOfOperations[6])
+        assertEquals(Operation.INVALID.name, calculator.performEquation())
+        calculator.setTextInput(listOfOperations[7])
+        assertEquals("12.5", calculator.performEquation())
+        calculator.setTextInput(listOfOperations[8])
+        assertEquals("3628800", calculator.performEquation())
+        calculator.setTextInput(listOfOperations[9])
+        assertEquals(Operation.INVALID.name, calculator.performEquation())
     }
 
     @Test
@@ -75,20 +101,6 @@ class CalculatorTest {
 
     @Test
     fun containsAlreadyOperatorAtPosition() {
-    }
-
-    @Test
-    fun is_Equation_Correct() {
-        val calculator = Calculator()
-
-        assertEquals(true, calculator.isEquationCorrect("3+2"))
-        assertEquals(true, calculator.isEquationCorrect("3-3"))
-        assertEquals(true, calculator.isEquationCorrect("3/3"))
-        assertEquals(true, calculator.isEquationCorrect("3×3"))
-        assertEquals(false, calculator.isEquationCorrect("1+(+)+3"))
-        assertEquals(false, calculator.isEquationCorrect(")("))
-        assertEquals(false, calculator.isEquationCorrect("3)-/(3"))
-        assertEquals(false, calculator.isEquationCorrect("(3+3--"))
     }
 
     @Test
