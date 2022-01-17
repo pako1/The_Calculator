@@ -8,7 +8,10 @@ enum class Operation(var operatorSymbol: Char) {
     PERCENTAGE('%'),
     INVALID(' '),
     INCOMPLETE(' '),
-    SIGNED_NUMBER_REPRESENTATION(' ');
+    SIGNED_NUMBER_REPRESENTATION(' '),
+    FACTORIAL('!'),
+    OPEN_PARENTHESIS('('),
+    CLOSE_PARENTHESIS(')');
 
     companion object {
         fun replaceUISymbolToMathSymbol(equation: String): String {

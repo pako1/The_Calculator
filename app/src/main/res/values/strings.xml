@@ -25,4 +25,5 @@
     <string name="close_parenthesis_button">)</string>
     <string name="log_button">log</string>
     <string name="factorial_button">!</string>
+    <string name="invalid_message">Not valid operation, check your equation</string>
 </resources>

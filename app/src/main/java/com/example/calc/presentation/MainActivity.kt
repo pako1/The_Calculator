@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import com.example.calc.R
 import com.example.calc.data.Operation
@@ -25,7 +24,7 @@ import javax.inject.Inject
 import kotlin.math.sqrt
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DarkLightPicker by DarkLightModePicker() {
 
     //By using inject here hilt will provide us a calculatorHelper instance by using the CalculatorModule to find out how..
     @Inject
@@ -47,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(mainBinding.root)
         mainBinding.lifecycleOwner = this
         initializeButtons()
-
         lifecycleScope.launch {
 
             viewModel.result.observe(this@MainActivity, { resultText ->
@@ -83,14 +81,15 @@ class MainActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         currentCursorPosition = savedInstanceState.getInt(CURSOR_POSITION_KEY, 0)
+
     }
 
     private suspend fun pickDarkOrLightMode() {
         dataStoreManager.retrieveDarkLightMode()
-            .collect {
+            .collect { isNightModeEnabled ->
                 withContext(Main) {
                     with(mainBinding) {
-                        when (it) {
+                        when (isNightModeEnabled) {
                             true -> {
                                 enableDarkMode()
                                 darkModeButton.isClickable = false
@@ -130,16 +129,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
     }
-
-    private fun isManuallyHandlingOfDarkModePossible(): Boolean =
-        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
-
-    private fun enableDarkMode() =
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
-    private fun enableLightMode() =
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-
 
     private fun initializeButtons() {
         with(mainBinding) {
@@ -289,21 +278,15 @@ class MainActivity : AppCompatActivity() {
                                 result.text = numberInPercentage
                                 calculatorHelper.setTextResult(numberInPercentage)
                             }
-                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
-                                equationResult
-                            ) -> return@setOnClickListener
-                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
-                                inputFieldText
-                            ) -> {
+                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber() -> return@setOnClickListener
+                            equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber() -> {
                                 val numberInPercentage =
                                     calculatorHelper.modifyDisplayedResult(inputFieldText.toPercent())
                                 numberInputField.append("%")
                                 result.text = numberInPercentage
                                 calculatorHelper.setTextResult(numberInPercentage)
                             }
-                            equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(
-                                equationResult
-                            ) -> {
+                            equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber() -> {
                                 val numberInPercentage =
                                     calculatorHelper.modifyDisplayedResult(equationResult.toPercent())
                                 numberInputField.append("%")
@@ -331,19 +314,13 @@ class MainActivity : AppCompatActivity() {
                         if (calculatorHelper.isRootingPossible()) {
                             val equationResult = calculatorHelper.performEquation()
                             when {
-                                equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
-                                    equationResult
-                                ) -> return@setOnClickListener
-                                equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber(
-                                    inputFieldText
-                                ) -> {
+                                equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber() -> return@setOnClickListener
+                                equationResult == Operation.INVALID.name && calculatorHelper.isPlainNumber() -> {
                                     val root = sqrt(inputFieldText.toDouble()).toString()
                                     result.text = root
                                     calculatorHelper.setTextResult(root)
                                 }
-                                equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber(
-                                    equationResult
-                                ) -> {
+                                equationResult != Operation.INVALID.name && calculatorHelper.isPlainNumber() -> {
                                     val root = sqrt(equationResult.toDouble()).toString()
                                     result.text = root
                                     calculatorHelper.setTextResult(root)
@@ -360,7 +337,7 @@ class MainActivity : AppCompatActivity() {
                 if (currentInput.isEmpty()) {
                     return@setOnClickListener
                 }
-                val isPlainNumber = calculatorHelper.isPlainNumber(currentInput)
+                val isPlainNumber = calculatorHelper.isPlainNumber()
                 if (isPlainNumber) {
                     val reversedNumber = calculatorHelper.reverseNumber()
                     calculatorHelper.setTextInput(reversedNumber)
@@ -378,11 +355,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            factorialBtn.setOnClickListener { numberInputField.insertChar('!') }
+            factorialBtn.setOnClickListener { numberInputField.insertChar(Operation.FACTORIAL.operatorSymbol) }
 
-            openParenthesisBtn.setOnClickListener {numberInputField.insertChar('(') }
+            openParenthesisBtn.setOnClickListener { numberInputField.insertChar(Operation.OPEN_PARENTHESIS.operatorSymbol) }
 
-            closeParenthesisBtn.setOnClickListener { numberInputField.insertChar(')')}
+            closeParenthesisBtn.setOnClickListener { numberInputField.insertChar(Operation.CLOSE_PARENTHESIS.operatorSymbol) }
 
             logBtn.setOnClickListener {}
 
@@ -391,7 +368,7 @@ class MainActivity : AppCompatActivity() {
                     Operation.INVALID.name, Operation.INCOMPLETE.name, Operation.SIGNED_NUMBER_REPRESENTATION.name -> {
                         Snackbar.make(
                             mainBinding.root,
-                            "Not valid operation, check your equation",
+                            R.string.invalid_message,
                             Snackbar.LENGTH_SHORT
                         ).show()
                         return@setOnClickListener

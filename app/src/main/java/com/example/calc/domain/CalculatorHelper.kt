@@ -13,20 +13,84 @@ interface CalculatorHelper {
     fun setTextResult(result: String)
     fun getTextInput(): String
     fun getTextResult(): String
+
+    /**
+     * Simple Append method that adds a new character at a specific position
+     * */
     fun appendTextInputAtPosition(newChar: Char, position: Int)
+
+    /**
+     * Resets the equation to empty
+     */
     fun resetTextInput()
+
+    /**
+     * Resets the result to empty
+     */
     fun resetResult()
+
+    /**
+     * Checks if there is a previous result in order to use it for the next computation
+     */
     fun doesResultExist(): Boolean
+
+    /**
+     * Calls the parser/lexer/evaluator library and passes the equation in order to
+     * calculate the result.
+     */
     fun performEquation(): String
+
+    /**
+     * Checks if there is already an operator at the current position of the equation.
+     * This is done in order to limit the user input
+     */
     fun containsAlreadyOperatorAtPosition(position: Int): Boolean
     fun modifyDisplayedResult(number: Double): String
+
+    /**
+     * Checks if all criteria are met in order to root a number
+     */
     fun isRootingPossible(): Boolean
+
+    /**
+     * Checks if all criteria are met in order to calculate the percentage of a number
+     */
     fun isApplyingPercentagePossible(textInput: String): Boolean
-    fun isPlainNumber(textInput: String): Boolean
+
+    /**
+     * Checks if the content of the equation is a simple number.
+     * This is done in order to apply the root and the percentage of a number.
+     * In case its an equation we find first the result and then apply the percentage and if its
+     * invalid we show a message respectively.
+     */
+    fun isPlainNumber(): Boolean
+
+    /**
+     * Reverts the number. If it is a positive number we make it a negative and vise versa.
+     */
     fun reverseNumber(): String
+
+    /**
+     * Adds parenthesis if we sign a number.
+     */
     fun addParenthesis(cursorPosition: Int): String
+
+    /**
+     * Checks if the input given to this function is a negative number. This is being used in
+     * cases we can't apply a mathematical operation on a number such as calculating the factorial.
+     */
     fun isNegative(textInput: String): Boolean
+
+    /**
+     * Checks the fidelity of the equation, so that we can prevent
+     * the calculation of invalid equations.
+     */
     fun isEquationCorrect(equation: String): Boolean
+
+    /**
+     * Checks if there is an operator at the end of the equation, so that we can prevent
+     * calculations of incomplete equations.
+     */
     fun hasOperatorAtEnd(): Boolean
 }
 
@@ -106,7 +170,7 @@ class Calculator @Inject constructor() : CalculatorHelper {
                 || operator == Operation.INVALID
     }
 
-    override fun isPlainNumber(textInput: String): Boolean =
+    override fun isPlainNumber(): Boolean =
         NUMBER_VALIDATOR.toRegex().matches(textInput)
 
     override fun reverseNumber(): String {
