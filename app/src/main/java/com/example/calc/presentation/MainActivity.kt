@@ -355,7 +355,8 @@ class MainActivity : AppCompatActivity(), DarkLightPicker by DarkLightModePicker
                 }
             }
 
-            factorialBtn.setOnClickListener { numberInputField.insertChar(Operation.FACTORIAL.operatorSymbol) }
+            factorialBtn.setOnClickListener {
+                numberInputField.insertChar(Operation.FACTORIAL.operatorSymbol) }
 
             openParenthesisBtn.setOnClickListener { numberInputField.insertChar(Operation.OPEN_PARENTHESIS.operatorSymbol) }
 

@@ -88,6 +88,7 @@ class Parser {
             left = DecimalNumberExpressionSyntax(left, dotToken, right)
         }
         if (provideCurrentToken().syntaxKind == SyntaxKind.FactorialToken){
+            nextToken()
             left = FactorialExpressionSyntax(left)
         }
         return left
