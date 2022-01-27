@@ -1,5 +1,6 @@
 name: Android Pull Request
-on: 
+on:
+  push:
   pull_request:
          branches:
           - master
