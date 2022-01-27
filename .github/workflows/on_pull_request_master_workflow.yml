@@ -1,8 +1,4 @@
-# Workflow name
 name: Android Pull Request
-
-# When it will be triggered
-# And in which branch
 on: 
   pull_request:
          branches:
@@ -10,24 +6,17 @@ on:
 
 jobs:
   build-android-app:
-# This step will create a JVM machine that will execute the jobs on a fresh virtual machine hosted by GitHub.
     runs-on: ubuntu-latest
     steps:
-# This step will use the checkout v2 action and will checkout your repository into the runner (JVM machine) so that it can run scripts against it! 
     - name: Checkout Code from VCS
       uses: actions/checkout@v2
-  
-# This step will set up the JDK so that we can run our android project
     - name: Set Up JDK              
       uses: actions/setup-java@v1.4.3
       with:
        java-version: 1.8
-#This step will do the lint check
     - name: Perform lint check
       run: ./gradlew -lint
-# This step will be used to build the app
     - name: Building android app
       run: ./gradlew assemble
-# This step will run the Junit tests
-   - name: Junit Testing
-     run: ./gradlew test
+    - name: Junit Testing
+      run: ./gradlew test
