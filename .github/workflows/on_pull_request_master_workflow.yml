@@ -5,8 +5,8 @@ on:
           - master
 
 jobs:
-  build-android-app:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: [ubuntu-latest]
     steps:
     - name: Checkout Code from VCS
       uses: actions/checkout@v2
