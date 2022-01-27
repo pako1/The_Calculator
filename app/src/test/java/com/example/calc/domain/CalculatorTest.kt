@@ -65,7 +65,7 @@ class CalculatorTest {
         calculator.setTextInput(listOfOperations[7])
         assertEquals("12.5", calculator.performEquation())
         calculator.setTextInput(listOfOperations[8])
-        assertEquals("3628800", calculator.performEquation())
+        assertEquals("36288001", calculator.performEquation())
         calculator.setTextInput(listOfOperations[9])
         assertEquals(Operation.INVALID.name, calculator.performEquation())
     }
