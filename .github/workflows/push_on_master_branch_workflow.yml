@@ -41,7 +41,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: lint-result-debug.html
-        path: '**build/reports/lint-results-debug.html'
+        path: ./build/reports/lint-results-debug.html
       # Runs all the Junit tests to make sure that nothing broke
     - name: Junit Testing
       if: always()
@@ -51,7 +51,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: index.html
-        path: '**build/reports/tests/testDebugUnitTest/index.html'
+        path: ./build/reports/tests/testDebugUnitTest/index.html
     - name: Apk Uploader
       run: echo "🖥️ Lets start the uploader for the Apk...Choo choo!!"
       # Uploads the debug apk to the github actions tab since we wont release it on playStore we dont need a signed version
@@ -60,6 +60,6 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: app-debug.apk
-        path: '**/build/outputs/apk/debug/app-debug.apk'
+        path: ./build/outputs/apk/debug/app-debug.apk
     - name: Apk Uploader finish
       run: echo "🖥️ The uploader finished generating the Apk...Byeee!!"
