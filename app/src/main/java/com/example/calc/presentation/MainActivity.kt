@@ -17,7 +17,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -48,12 +47,12 @@ class MainActivity : AppCompatActivity(), DarkLightPicker by DarkLightModePicker
         initializeButtons()
         lifecycleScope.launch {
 
-            viewModel.result.observe(this@MainActivity, { resultText ->
+            viewModel.result.observe(this@MainActivity) { resultText ->
                 mainBinding.result.text = resultText
                 calculatorHelper.setTextResult(resultText)
-            })
+            }
 
-            viewModel.equation.observe(this@MainActivity, { updatedEquation ->
+            viewModel.equation.observe(this@MainActivity) { updatedEquation ->
                 with(mainBinding) {
                     numberInputField.setText(updatedEquation)
                     calculatorHelper.setTextInput(updatedEquation)
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity(), DarkLightPicker by DarkLightModePicker
                         numberInputField.setSelection(updatedEquation.length)
                     }
                 }
-            })
+            }
             pickDarkOrLightMode()
         }
     }
