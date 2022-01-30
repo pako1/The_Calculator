@@ -4,6 +4,10 @@ name: Android Pull Request
 # Trigger of the workflow. The workflow will run when we open a pull_request to the master
 on:
   pull_request:
+# We want to call that workflow only when its first time opened or when the pull request’s tracking branch is synchronized with the source branch
+    types:
+      - opened
+      - synchronize
     branches:
       - master
 
@@ -14,43 +18,53 @@ jobs:
     runs-on: ubuntu-latest
     # The steps that will be executed sequentually one after another are configured under the steps list
     steps:
-      # Picks the branch from which the latest commit came from (will be our branch that opens the pull_request)
+    # Picks the branch from which the latest commit came from (will be our branch that opens the pull_request)
     - name: Checkout Code from VCS
       uses: actions/checkout@v2
-      # Shows the branch it will run on
-    - name: Show Branch
-      run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      # Sets up the JDk in order to run kotlin
+
+    # Shows the branch it will run on
+    - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
+    # Sets up the JDk in order to run kotlin
     - name: Set Up JDK
       uses: actions/setup-java@v1.4.3
       with:
         java-version: 11
-      # Requires permission ¯\_(ツ)_/¯
+
+    # Requires permission ¯\_(ツ)_/¯
     - name: Change wrapper permissions
       run: chmod +x ./gradlew
-    - name: Starting the spicy part
-      run: echo "🖥️ The workflow is now ready to do static analysis,test your code and build an apk on the runner."
-      # Performs Lint check on project for potential bugs and optimizations
+
+    - run: echo "🖥️ The workflow is now ready to do static analysis,test your code and build an apk on the runner."
+
+    # Performs Lint check on project for potential bugs and optimizations
     - name: Perform lint check
       run: ./gradlew lint
-      # Uploads the results as an artifact in the github actions tab
+
+    # Uploads the results as an artifact in the github actions tab
     - name: Upload Lint Report
       if: always()
       uses: actions/upload-artifact@v2
       with:
-        name: lint-result-debug.html
-        path: ./build/reports/lint-results-debug.html
+        name: Lint results
+        path: '**/build/reports/**.html'
+
+    # Runs all the Junit tests to make sure that nothing is broken
     - name: Junit Testing
       if: always()
       run: ./gradlew test
-    - name: echo "🖥️ Lets start the uploader for the test results...Choo choo!!"
-      # Uploads the results as an artifact in the github actions tab
+    - run: echo "🖥️ Lets start the uploader for the test results...Choo choo!!"
+
+    # Uploads the results as an artifact in the github actions tab
     - name: Upload Tests Report
       if: always()
       uses: actions/upload-artifact@v2
       with:
-        name: index.html
-        path: ./build/reports/tests/testDebugUnitTest/index.html
-      # Builds the app and provides an apk
+        name: Test report
+        path: '**/build/reports/tests/'
+
+    # Builds the app and provides an apk
     - name: Building android app
       run: ./gradlew assembleDebug
+
+    - run: echo "🖥️ The Apk builder finished generating the Apk...Byeee!!"
