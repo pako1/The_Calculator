@@ -13,6 +13,7 @@ It is using a custom lexer/parser/evaluator library for doing the calculations.
 - Square Root
 - Percentage
 - Factorial
+- Log
 - History of previous calculations
 - Night & Day mode
 
@@ -22,7 +23,6 @@ It is using a custom lexer/parser/evaluator library for doing the calculations.
 ### RoadMap :calendar:
 - Adding scientific mode for more complex calculations
 - Adding Junit tests & instrumented tests
-- Adding CI/CD for faster testing, merging etc..
 
 #### Language
 
@@ -30,8 +30,8 @@ It is using a custom lexer/parser/evaluator library for doing the calculations.
 
 #### Tools
 
-- Android Studio IDE (Arctic Fox)
-
+- Android Studio (BumbleBee)
+- Github Actions
 
 #### Android & Libraries
 - Android SDK 21 - 32
@@ -42,14 +42,12 @@ It is using a custom lexer/parser/evaluator library for doing the calculations.
 - [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
 - [Junit](https://developer.android.com/training/testing/unit-testing/local-unit-tests)
 - [viewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
-- [KotlinTest](https://github.com/kotest/kotest)
 - [Coroutines](https://kotlinlang.org/docs/coroutines-guide.html)
 - [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
 
 ## Installation
 
 Clone this repository and import into Android Studio
-
 
 ## Maintainers
 
@@ -65,20 +63,19 @@ Pull requests and suggestions are welcome. Please open an issue first to discuss
 
 1. Fork it.
 
-2. Create your feature branch (git checkout -b my-new-feature).
+2. Create your feature branch (git checkout -b work/my-new-feature-name).
 
 3. Commit your changes (git commit -m 'Add some feature').
 
-4. Push your branch (git push origin my-new-feature).
+4. Please make sure to update tests as appropriate.
 
-5. Please make sure to update tests as appropriate.
+5. Push your branch (git push origin my-new-feature).
 
-6. Create a new Pull Request by using the template.
+6. Create a new Pull Request by using the template and after github actions have passed it will be approved.
 
 ## License
 
 [Apache License 2.0](LICENSE.md)
-
 
 ## Do you like my work?
 
