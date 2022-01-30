@@ -39,7 +39,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: lint-result-debug.html
-        path: build/reports/lint-results-debug.html
+        path: '**build/reports/lint-results-debug.html'
     - name: Junit Testing
       if: always()
       run: ./gradlew test
@@ -50,7 +50,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: index.html
-        path: build/reports/tests/testDebugUnitTest/index.html
+        path: '**build/reports/tests/testDebugUnitTest/index.html'
       # Builds the app and provides an apk
     - name: Building android app
       run: ./gradlew assembleDebug
