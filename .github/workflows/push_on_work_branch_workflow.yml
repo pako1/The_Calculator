@@ -45,7 +45,8 @@ jobs:
     - name: Junit Testing
       if: always()
       run: ./gradlew test
-    - name: echo "🖥️ Lets start the uploader for the test results...Choo choo!!"
+    - name: Test Result Uploader
+      run: echo "🖥️ Lets start the uploader for the test results...Choo choo!!"
     # Uploads the results as an artifact in the github actions tab
     - name: Upload Tests Report
       if: always()

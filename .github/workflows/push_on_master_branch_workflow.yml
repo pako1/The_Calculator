@@ -33,7 +33,8 @@ jobs:
     # Performs Lint check on project for potential bugs and optimizations
     - name: Perform lint check
       run: ./gradlew lint
-    - name: echo "🖥️ Lets start the uploader for the test results...Choo choo!!"
+    - name: Lint Uploader
+      run: echo "🖥️ Lets start the uploader for the test results...Choo choo!!"
       # Uploads the results as an artifact in the github actions tab
     - name: Upload Lint Report
       if: always()
@@ -45,7 +46,8 @@ jobs:
     - name: Junit Testing
       if: always()
       run: ./gradlew test
-    - name: echo "🖥️ Lets start the uploader for the Apk...Choo choo!!"
+    - name: Apk Uploader
+      run: echo "🖥️ Lets start the uploader for the Apk...Choo choo!!"
       # Uploads the debug apk to the github actions tab since we wont release it on playStore we dont need a signed version
     - name: Upload Android Apk
       if: success()
@@ -53,4 +55,5 @@ jobs:
       with:
         name: app-debug.apk
         path: build/outputs/apk/debug/app-debug.apk
-    - name: echo "🖥️ The uploader finished generating the Apk...Byeee!!"
+    - name: Apk Uploader finish
+      run: echo "🖥️ The uploader finished generating the Apk...Byeee!!"
