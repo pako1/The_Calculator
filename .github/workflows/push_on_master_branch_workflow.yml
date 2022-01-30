@@ -1,0 +1,56 @@
+# Name of the workflow
+name: Android Push On Work Branch
+
+# Trigger of the workflow. The workflow will run when we push to branches witht he prefix work
+on:
+  push:
+    branches:
+      - work/**
+
+jobs:
+  # Name of the job that will run
+  build:
+    # Creates a new virtual machine that will run on Ubuntu
+    runs-on: ubuntu-latest
+    # The steps that will be executed sequentually one after another are configured under the steps list
+    steps:
+      # Picks the branch from which the latest commit came from (will be our branch that opens the pull_request)
+      - name: Checkout Code from VCS
+        uses: actions/checkout@v2
+        # Shows the branch it will run on
+      - name: Show Branch
+        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      # Sets up the JDk in order to run kotlin
+      - name: Set Up JDK
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+      # Requires permission ¯\_(ツ)_/¯
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+      - name: Starting the spicy part
+        run: echo "🖥️ The workflow is now ready to do static analysis,test your code and build an apk on the runner."
+      # Performs Lint check on project for potential bugs and optimizations
+      - name: Perform lint check
+        run: ./gradlew lint
+      - name: echo "🖥️ Lets start the uploader for the test results...Choo choo!!"
+        # Uploads the results as an artifact in the github actions tab
+      - name: Upload Lint Report
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: lint-result-debug.html
+          path: build/reports/lint-results-debug.html
+      # Runs all the Junit tests to make sure that nothing broke
+      - name: Junit Testing
+        if: always()
+        run: ./gradlew test
+      - name: echo "🖥️ Lets start the uploader for the Apk...Choo choo!!"
+        # Uploads the debug apk to the github actions tab since we wont release it on playStore we dont need a signed version
+      - name: Upload Android Apk
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-debug.apk
+        path: build/outputs/apk/debug/app-debug.apk
+      - name: echo "🖥️ The uploader finished generating the Apk...Byeee!!"

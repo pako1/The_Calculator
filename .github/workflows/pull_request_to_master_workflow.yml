@@ -1,24 +1,41 @@
+# Name of the workflow
 name: Android Pull Request
+
+# Trigger of the workflow. The workflow will run when we open a pull_request to the master
 on:
-  push:
   pull_request:
-         branches:
-          - master
+    branches:
+      - master
+
 jobs:
+  # Name of the job that will run
   build:
-    runs-on: [ubuntu-latest]
+    # Creates a new virtual machine that will run on Ubuntu
+    runs-on: ubuntu-latest
+    # The steps that will be executed sequentually one after another are configured under the steps list
     steps:
-    - name: Checkout Code from VCS
-      uses: actions/checkout@v2
-    - name: Set Up JDK              
-      uses: actions/setup-java@v1.4.3
-      with:
-       java-version: 11
-    - name: Change wrapper permissions  // 2
-      run: chmod +x ./gradlew
-    - name: Perform lint check
-      run: ./gradlew lint
-    - name: Building android app
-      run: ./gradlew assemble
-    - name: Junit Testing
-      run: ./gradlew test
+      # Picks the branch from which the latest commit came from (will be our branch that opens the pull_request)
+      - name: Checkout Code from VCS
+        uses: actions/checkout@v2
+      # Shows the branch it will run on
+      - name: Show Branch
+        run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      # Sets up the JDk in order to run kotlin
+      - name: Set Up JDK
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+      # Requires permission ¯\_(ツ)_/¯
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+      - name: Starting the spicy part
+        run: echo "🖥️ The workflow is now ready to do static analysis,test your code and build an apk on the runner."
+      # Performs Lint check on project for potential bugs and optimizations
+      - name: Perform lint check
+        run: ./gradlew lint
+      # Runs all the Junit tests to make sure that nothing broke
+      - name: Junit Testing
+        run: ./gradlew test
+      # Builds the app and provides an apk
+      - name: Building android app
+        run: ./gradlew assembleDebug
